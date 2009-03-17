@@ -1,0 +1,271 @@
+%%for slideshow
+\documentclass[ignorenonframetext]{beamer} %add option 'draft' for quicker compilation
+\usepackage{beamerthemesplit,amsmath,amssymb,multirow}
+\newcommand{\slides}{1}
+%this only compiles frames with [label=current]
+%\includeonlyframes{current} 
+ 
+%for handouts
+%\documentclass[a4paper,12pt]{article}
+%\usepackage{beamerarticle}
+%\newcommand{\slides}{0}
+
+\mode<presentation>
+{
+%    \usetheme{AnnArbor} % horrible blue orange yellow....
+%  \usetheme{Darmstadt} %blue one with balls and gradients
+ % \usecolortheme{seahorse}  %% This looks horrible, pastel blue colours
+\usecolortheme{rose}  %% Standard blue one that everyone uses
+  \setbeamercovered{transparent}
+  %Add university logo
+  %\pgfdeclareimage[height=1cm]{university-logo}{logo}
+  %\logo{\pgfuseimage{university-logo}}
+  % If you wish to uncover everything in a step-wise fashion, uncomment
+  % the following command:
+%  \beamerdefaultoverlayspecification{<+->}
+	\newcommand{\tcr}{\textcolor{red}}
+}
+\mode<article>{
+  \usepackage{fullpage}
+	\newcommand{\tcr}{\textcolor{black}}
+  \renewcommand{\baselinestretch}{1.0}
+  \oddsidemargin -1.5cm \evensidemargin -1.5in
+  \topmargin=-1.5cm \headheight=0pt
+  \headsep 0pt \textwidth=19cm
+  \textheight=27cm \columnsep 10pt \columnseprule 0pt \parindent 0pt
+  \parskip 0.0pt
+  \usepackage{tweaklist}
+  \renewcommand{\itemhook}{
+    \setlength{\topsep}{-0pt}
+    \setlength{\itemsep}{-0pt}
+    \setlength{\parsep}{-0pt}
+  }
+  \renewcommand{\enumhook}{
+    \setlength{\topsep}{-0pt}
+    \setlength{\itemsep}{-0pt}
+    \setlength{\parsep}{-0pt}
+  }
+}
+
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+\usepackage{graphics,graphicx,fancyhdr,color,amsmath,url,enumerate,alltt}
+\usepackage{epsf}
+\usepackage{ifthen}
+
+
+\newcommand{\bc}{\begin{center}}
+\newcommand{\ec}{\end{center}}
+\newcommand{\bn}{\begin{enumerate}}
+\newcommand{\en}{\end{enumerate}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\be}{\begin{eqnarray}}
+\newcommand{\ee}{\end{eqnarray}}
+\newcommand{\bes}{\begin{eqnarray*}}
+\newcommand{\ees}{\end{eqnarray*}}
+
+
+\title[Smoothing over complex regions]{Using the Schwarz-Christoffel transform to smooth over complex regions}
+
+%\subtitle{A mixture model approach}
+
+\author[Miller]{David Lawrence Miller}
+
+\institute{Mathematical Sciences\\University of Bath}
+
+\date[24 March 2009] {Research Students' Conference 2009, Lancaster}
+% - Either use conference name or its abbreviation.
+% - Not really informative to the audience, more for people (including
+%   yourself) who are reading the slides online
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+\mode<presentation> {
+%    \AtBeginSubsection[]
+    \AtBeginSection[]
+    {
+    \begin{frame}<beamer>
+        \frametitle{Outline}
+        %\tableofcontents[currentsection,currentsubsection]
+        \tableofcontents[currentsection]
+    \end{frame}
+    }
+}
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\mode<article>{
+\maketitle
+}
+
+\mode<presentation> {
+\begin{frame}
+  \frametitle{Outline}
+  \tableofcontents %[pausesections]
+  % You might wish to add the option [pausesections]
+\end{frame}
+}
+
+\section{Smoothing over complex regions}
+
+\subsection{Intro}
+
+\begin{frame}
+	\frametitle{Smoothing in 2 dimensions}
+       \bi
+         \item Have some geographical region and wish to find out something about the biological population in it. 
+         \item Want to find something out about the response given its coordinates and other covariates (eg. habitat, size, sex, etc.) 
+         \item This problem is relatively easy if the domain is simple.
+        \ei
+        \bc
+%  PIC HERE
+%              \includegraphics[height=1.75in]{muw}
+
+       \ec
+\end{frame}
+
+\begin{frame}
+	\frametitle{Smoothing over complex domains}
+       \bi
+         \item Smoothing of complex domains makes this a lot more difficult.
+         \item Problem of leakage.
+         \item Models need to incorporate information about the intrinsic structure of the domain.
+         \item Euclidean distance doesn't always make sense.
+       \ei
+\end{frame}
+
+\subsection{Solutions}
+
+\begin{frame}
+	\frametitle{Possible solutions to leakage problems}
+       \bi
+         \item FELSPLINE (Ramsay, (2002).)
+         \item Within-area distance (Wang and Ranalli. (2007).)
+         \item Soap film smoothers (Wood \emph{et al.} (2008).) 
+         \item Domain morphing (me!)
+        \ei
+        \bc
+              \includegraphics[height=1.75in]{muw}
+       \ec
+\end{frame}
+
+\begin{frame}
+	\frametitle{Why morph the domain?}
+       \bi
+         \item Takes into account within-area distance.
+         \item Gives a known domain that is easy to smooth over.
+         \item  
+        \ei
+        \bc
+              \includegraphics[height=1.75in]{muw}
+       \ec
+\end{frame}
+
+
+\section{Domain morphing with the Schwarz-Christoffel transform}
+
+\begin{frame}
+	\frametitle{The Schwarz-Christoffel transform}
+       \bi
+         \item Take a polygon in some domain $W$ and morph it to a new domain $W^*$.
+         \item Do this by starting at the new domain and working back to the polygon.
+         \item Example: add extra edges to a rectangle and then alter angles.
+         \item Can draw a polygonal bounding box around some arbitrary shape.
+        \ei
+        \bc
+              \includegraphics[height=1.75in]{muw}
+       \ec
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Schwarz-Christoffel algorithm}
+       \bi
+         \item Start with a rectangle.
+         \item Add edges.
+         \item Iteratively deform by changing angles.
+         \item Continue until the new shape is identical to the polygon.
+         \item We then have a function for the mapping, $\varphi(x,y)$.
+         \item $\varphi(x,y)$ is a conformal mapping.
+        \ei 
+        \bc
+              \includegraphics[height=1.75in]{muw}
+       \ec
+\end{frame}
+
+
+\section{Simulation experiment}
+
+\begin{frame}
+	\frametitle{Ramsay's horseshoes}
+       \bi
+         \item Ramsay proposed a horseshoe test function that precisely demonstrates the problem. 
+         \item An alternate function was also proposed.
+         \item Simulation consisted of taking a sample from the functions, adding noise and then trying to fit a transformed model along with a soap film for comparison.
+         \item Use a bounding box around the horseshoe.
+        \ei
+        \bc
+              \includegraphics[height=1.75in]{muw}
+       \ec
+\end{frame}
+
+\begin{frame}
+	\frametitle{Results (I)}
+       \bi
+         \item Morphing the horseshoe shape still gives a slightly odd domain. 
+         \item We can see, however that we are still doing better than before.
+         \item Looking at line plots, we can see the difference in gradient.
+      %% Line plots
+
+        \ei
+        \bc
+              \includegraphics[height=1.75in]{muw}
+       \ec
+\end{frame}
+
+\begin{frame}
+	\frametitle{Results (II)}
+       \bi
+         \item 
+      % table of MSE results?
+         \item
+         \item 
+        \ei
+        \bc
+              \includegraphics[height=1.75in]{muw}
+       \ec
+\end{frame}
+\begin{frame}
+	\frametitle{Where next?}
+       \bi
+         \item 
+         \item
+         \item 
+        \ei
+        \bc
+              \includegraphics[height=1.75in]{muw}
+       \ec
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{References}
+       \bi
+         \item soap
+         \item wang and ranalli
+         \item trefethen
+         \item ramsay
+        \ei
+        \bc
+              \includegraphics[height=1.75in]{muw}
+       \ec
+\end{frame}
+
+
+\end{document}
