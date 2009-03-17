@@ -123,11 +123,11 @@
          \item Want to find something out about the response given its coordinates and other covariates (eg. habitat, size, sex, etc.) 
          \item This problem is relatively easy if the domain is simple.
         \ei
-        \bc
+%        \bc
 %  PIC HERE
 %              \includegraphics[height=1.75in]{muw}
 
-       \ec
+%       \ec
 \end{frame}
 
 \begin{frame}
@@ -138,6 +138,10 @@
          \item Models need to incorporate information about the intrinsic structure of the domain.
          \item Euclidean distance doesn't always make sense.
        \ei
+       \bc\begin{tabular}{@{}cc}
+          \includegraphics[width=1.3in]{figs/ramsayhorseshoe} & \includegraphics[width=1.3in]{figs/leakageexample}\\
+          Ramsay test function & Thin plate spline fit\\
+       \end{tabular}\ec
 \end{frame}
 
 \subsection{Solutions}
@@ -150,9 +154,9 @@
          \item Soap film smoothers (Wood \emph{et al.} (2008).) 
          \item Domain morphing (me!)
         \ei
-        \bc
-              \includegraphics[height=1.75in]{muw}
-       \ec
+%        \bc
+%              \includegraphics[height=1.75in]{muw}
+%       \ec
 \end{frame}
 
 \begin{frame}
@@ -162,9 +166,6 @@
          \item Gives a known domain that is easy to smooth over.
          \item  
         \ei
-        \bc
-              \includegraphics[height=1.75in]{muw}
-       \ec
 \end{frame}
 
 
@@ -179,7 +180,7 @@
          \item Can draw a polygonal bounding box around some arbitrary shape.
         \ei
         \bc
-              \includegraphics[height=1.75in]{muw}
+              \includegraphics[height=1.75in]{figs/mappingdia}
        \ec
 \end{frame}
 
@@ -194,9 +195,9 @@
          \item We then have a function for the mapping, $\varphi(x,y)$.
          \item $\varphi(x,y)$ is a conformal mapping.
         \ei 
-        \bc
-              \includegraphics[height=1.75in]{muw}
-       \ec
+%        \bc
+%              \includegraphics[height=1.75in]{muw}
+%       \ec
 \end{frame}
 
 
@@ -209,10 +210,12 @@
          \item An alternate function was also proposed.
          \item Simulation consisted of taking a sample from the functions, adding noise and then trying to fit a transformed model along with a soap film for comparison.
          \item Use a bounding box around the horseshoe.
-        \ei
-        \bc
-              \includegraphics[height=1.75in]{muw}
-       \ec
+       \ei
+       \bc\begin{tabular}{@{}cc}
+          \includegraphics[width=1.3in]{figs/ramsayhorseshoe} & \includegraphics[width=1.3in]{figs/altramsayhorseshoe}\\
+          Ramsay test function & Alternate Ramsay test function\\
+       \end{tabular}\ec
+
 \end{frame}
 
 \begin{frame}
@@ -223,23 +226,25 @@
          \item Looking at line plots, we can see the difference in gradient.
       %% Line plots
 
-        \ei
-        \bc
-              \includegraphics[height=1.75in]{muw}
-       \ec
+       \ei
+       \bc\begin{tabular}{@{}cc}
+          \includegraphics[width=1.3in]{figs/horseshoecentreline} & \includegraphics[width=1.3in]{figs/centrelinelineplots}\\
+       \end{tabular}\ec
+
+
 \end{frame}
 
 \begin{frame}
 	\frametitle{Results (II)}
        \bi
-         \item 
+         \item Fit using both thin plate regression splines and P-splines. 
       % table of MSE results?
          \item
          \item 
         \ei
-        \bc
-              \includegraphics[height=1.75in]{muw}
-       \ec
+%        \bc
+%              \includegraphics[height=1.75in]{muw}
+%       \ec
 \end{frame}
 \begin{frame}
 	\frametitle{Where next?}
@@ -248,9 +253,9 @@
          \item
          \item 
         \ei
-        \bc
-              \includegraphics[height=1.75in]{muw}
-       \ec
+%        \bc
+%              \includegraphics[height=1.75in]{muw}
+%       \ec
 \end{frame}
 
 
@@ -262,9 +267,9 @@
          \item trefethen
          \item ramsay
         \ei
-        \bc
-              \includegraphics[height=1.75in]{muw}
-       \ec
+%        \bc
+%              \includegraphics[height=1.75in]{muw}
+%       \ec
 \end{frame}
 
 
