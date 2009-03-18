@@ -122,12 +122,10 @@
          \item Have some geographical region and wish to find out something about the biological population in it. 
          \item Want to find something out about the response given its coordinates and other covariates (eg. habitat, size, sex, etc.) 
          \item This problem is relatively easy if the domain is simple.
-        \ei
-%        \bc
-%  PIC HERE
-%              \includegraphics[height=1.75in]{muw}
-
-%       \ec
+       \ei
+       \bc
+         \includegraphics[width=2.5in]{figs/peninsula}
+       \ec
 \end{frame}
 
 \begin{frame}
@@ -139,7 +137,8 @@
          \item Euclidean distance doesn't always make sense.
        \ei
        \bc\begin{tabular}{@{}cc}
-          \includegraphics[width=1.3in]{figs/ramsayhorseshoe} & \includegraphics[width=1.3in]{figs/leakageexample}\\
+          & \\
+          \includegraphics[width=2in, trim=1in 1in 1in 1in]{figs/ramsayhorseshoe} & \includegraphics[width=2in, trim=1in 1in 1in 1in]{figs/leakageexample}\\
           Ramsay test function & Thin plate spline fit\\
        \end{tabular}\ec
 \end{frame}
@@ -150,7 +149,7 @@
 	\frametitle{Possible solutions to leakage problems}
        \bi
          \item FELSPLINE (Ramsay, (2002).)
-         \item Within-area distance (Wang and Ranalli. (2007).)
+         \item Within-area distance (Wang and Ranalli, (2007).)
          \item Soap film smoothers (Wood \emph{et al.} (2008).) 
          \item Domain morphing (me!)
         \ei
@@ -163,13 +162,15 @@
 	\frametitle{Why morph the domain?}
        \bi
          \item Takes into account within-area distance.
-         \item Gives a known domain that is easy to smooth over.
-         \item  
+         \item Gives a known domain that is easier to smooth over.
+         \item Potentially less computationally intensive. 
         \ei
 \end{frame}
 
 
 \section{Domain morphing with the Schwarz-Christoffel transform}
+
+\subsection{Details}
 
 \begin{frame}
 	\frametitle{The Schwarz-Christoffel transform}
@@ -180,7 +181,7 @@
          \item Can draw a polygonal bounding box around some arbitrary shape.
         \ei
         \bc
-              \includegraphics[height=1.75in]{figs/mappingdia}
+              \includegraphics[height=1in]{figs/mappingdia}
        \ec
 \end{frame}
 
@@ -195,13 +196,12 @@
          \item We then have a function for the mapping, $\varphi(x,y)$.
          \item $\varphi(x,y)$ is a conformal mapping.
         \ei 
-%        \bc
-%              \includegraphics[height=1.75in]{muw}
-%       \ec
 \end{frame}
 
 
 \section{Simulation experiment}
+
+\subsection{Ramsay's horseshoes}
 
 \begin{frame}
 	\frametitle{Ramsay's horseshoes}
@@ -209,49 +209,95 @@
          \item Ramsay proposed a horseshoe test function that precisely demonstrates the problem. 
          \item An alternate function was also proposed.
          \item Simulation consisted of taking a sample from the functions, adding noise and then trying to fit a transformed model along with a soap film for comparison.
+       \ei
+       \bc\begin{tabular}{@{}cc}
+          \includegraphics[width=1.5in, trim=1in 1in 1in 1in]{figs/ramsayhorseshoe} & \includegraphics[width=1.5in, trim=1in 1in 1in 1in]{figs/altramsayhorseshoe}\\
+          Ramsay test function & Alternate Ramsay\\
+           & test function\\
+       \end{tabular}\ec
+
+\end{frame}
+
+\subsection{Results}
+
+\begin{frame}
+	\frametitle{The mapping}
+      \bi
          \item Use a bounding box around the horseshoe.
-       \ei
-       \bc\begin{tabular}{@{}cc}
-          \includegraphics[width=1.3in]{figs/ramsayhorseshoe} & \includegraphics[width=1.3in]{figs/altramsayhorseshoe}\\
-          Ramsay test function & Alternate Ramsay test function\\
-       \end{tabular}\ec
-
+      \bc
+         \includegraphics[height=0.75in, trim=1in 1in 1in 0.75in]{figs/hswithboundingbox} 
+      \ec
+         \item Morphing the horseshoe shape still gives a slightly odd domain however, we are still doing better than before.
+      \bc
+          \includegraphics[height=0.75in, trim=1in 1in 1in 0.75in]{figs/hsgridmapping} 
+      \ec
+      \ei
 \end{frame}
 
-\begin{frame}
-	\frametitle{Results (I)}
-       \bi
-         \item Morphing the horseshoe shape still gives a slightly odd domain. 
-         \item We can see, however that we are still doing better than before.
-         \item Looking at line plots, we can see the difference in gradient.
-      %% Line plots
 
-       \ei
-       \bc\begin{tabular}{@{}cc}
-          \includegraphics[width=1.3in]{figs/horseshoecentreline} & \includegraphics[width=1.3in]{figs/centrelinelineplots}\\
-       \end{tabular}\ec
-
-
-\end{frame}
 
 \begin{frame}
-	\frametitle{Results (II)}
+	\frametitle{Results}
        \bi
-         \item Fit using both thin plate regression splines and P-splines. 
+         \item Fit using both thin plate regression splines and P-splines with a comparison to the soap film (current best.) 
       % table of MSE results?
-         \item
-         \item 
+         \item MSE used to compare over a grid of predicition points.
+         \item Transformation method does well on the first horseshoe.
+         \item Not so well for the alternate horseshoe. 
         \ei
-%        \bc
-%              \includegraphics[height=1.75in]{muw}
-%       \ec
 \end{frame}
+
+
+\begin{frame}
+	\frametitle{Horseshoe plots}
+            \centering
+            % trim order l b r t
+          \includegraphics[width=4in,trim=2in 1in 2in 1in]{figs/compsmooth}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Alternate horseshoe plots}
+            \centering
+            % trim order l b r t
+          \includegraphics[width=4in,trim=2in 1in 2in 1in]{figs/altramsaycomp}
+\end{frame}
+
+\subsection{Analysis}
+
+\begin{frame}
+	\frametitle{Why does it (sometimes) do better?}
+       \bi
+         \item Looking at line plots, we can see the difference in gradient.
+         \item SC method seems to approximate the gradient better.
+       \ei
+       \bc\begin{tabular}{c c}
+            \centering
+            % trim order l b r t
+          \includegraphics[width=1in, trim=1in 0.75in 0.5in 0.5in]{figs/horseshoecentreline-1} & \includegraphics[width=2in]{figs/centrelinelineplots}\\
+%          \includegraphics[width=2in]{figs/horseshoecentreline-2} &\\
+       \end{tabular}\ec
+
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Why does it (sometimes) do worse?}
+       \bi
+         \item SC method still seems to approximate the gradient very well here.
+         \item 
+       \ei
+       \bc
+          \includegraphics[width=4in]{figs/altcentrelinelineplots}\\
+       \ec
+
+\end{frame}
+
 \begin{frame}
 	\frametitle{Where next?}
        \bi
-         \item 
-         \item
-         \item 
+         \item Real data! 
+         \item Looking at alternative penalties for P-splines.
+         \item Implementation is Matlab+R, would be nice to have something more coherent (and not Matlab.)
         \ei
 %        \bc
 %              \includegraphics[height=1.75in]{muw}
@@ -262,14 +308,11 @@
 \begin{frame}
 	\frametitle{References}
        \bi
-         \item soap
-         \item wang and ranalli
-         \item trefethen
-         \item ramsay
+         \item S.N. Wood, M.V. Bravington, and S.L. Hedley. \emph{Soap film smoothing. JRSSB, 2008}
+         \item H. Wang and M.G. Ranalli. \emph{Low-rank smoothing splines on complicated domains. Biometrics, 2007}
+         \item T.A. Driscoll and L.N. Trefethen. \emph{Schwarz-Christoffel Mapping. Cambridge, 2002}
+         \item T. Ramsay. \emph{Spline smoothing over difficult regions. JRSSB, 2001}
         \ei
-%        \bc
-%              \includegraphics[height=1.75in]{muw}
-%       \ec
 \end{frame}
 
 
