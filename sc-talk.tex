@@ -66,6 +66,7 @@
 \newcommand{\ee}{\end{eqnarray}}
 \newcommand{\bes}{\begin{eqnarray*}}
 \newcommand{\ees}{\end{eqnarray*}}
+\newcommand{\expect}[1]{\mathbb{E}\left[ #1 \right]}
 
 
 \title[Smoothing over complex regions]{Using the Schwarz-Christoffel transform to smooth over complex regions}
@@ -120,7 +121,7 @@
 	\frametitle{Smoothing in 2 dimensions}
        \bi
          \item Have some geographical region and wish to find out something about the biological population in it. 
-         \item Want to find something out about the response given its coordinates and other covariates (eg. habitat, size, sex, etc.) 
+         \item Response is eg. animal distribution, wish to predict based on $(x,y)$ and other covariates eg. habitat, size, sex, etc.
          \item This problem is relatively easy if the domain is simple.
        \ei
        \bc
@@ -129,12 +130,29 @@
 \end{frame}
 
 \begin{frame}
+	\frametitle{Smoothing with GAMs}
+      \bi
+         \item Take a GLM, throw in some non-parametric components.
+         \item Objective function takes the form:
+      \ei
+      \bc
+      \begin{equation*}
+      \sum_{i=1}^n (z_i-f(x_i,y_i;\theta))^2 + \lambda \int_\Omega Pf(x,y;\theta)d\Omega
+      \end{equation*}
+      \ec
+      \bi
+         \item $f$ is the function you want to estimate, made up of basis functions, so $z_i = f(x_i,y_i;\theta) + \epsilon_i$.
+         \item $P$ is some penalty function, usually second squared derivative.
+      \ei
+\end{frame}
+
+\begin{frame}
 	\frametitle{Smoothing over complex domains}
        \bi
          \item Smoothing of complex domains makes this a lot more difficult.
          \item Problem of leakage.
-         \item Models need to incorporate information about the intrinsic structure of the domain.
          \item Euclidean distance doesn't always make sense.
+         \item Models need to incorporate information about the intrinsic structure of the domain.
        \ei
        \bc\begin{tabular}{@{}cc}
           & \\
@@ -153,18 +171,25 @@
          \item Soap film smoothers (Wood \emph{et al.} (2008).) 
          \item Domain morphing (me!)
         \ei
-%        \bc
-%              \includegraphics[height=1.75in]{muw}
-%       \ec
 \end{frame}
 
 \begin{frame}
 	\frametitle{Why morph the domain?}
-       \bi
+      \bi
          \item Takes into account within-area distance.
          \item Gives a known domain that is easier to smooth over.
          \item Potentially less computationally intensive. 
-        \ei
+      \ei
+      \bc
+         \textbf{However:}
+      \ec
+      \bi
+         \item Don't maintain isotropy - distribution of points odd.
+         \item Not clear what this does to the smoothness penalty.
+      \ei
+      \bc
+         \includegraphics[height=1in]{figs/matlab-test-3}
+      \ec
 \end{frame}
 
 
@@ -177,7 +202,7 @@
        \bi
          \item Take a polygon in some domain $W$ and morph it to a new domain $W^*$.
          \item Do this by starting at the new domain and working back to the polygon.
-         \item Example: add extra edges to a rectangle and then alter angles.
+         %\item Example: add extra edges to a rectangle and then alter angles.
          \item Can draw a polygonal bounding box around some arbitrary shape.
         \ei
         \bc
@@ -196,6 +221,9 @@
          \item We then have a function for the mapping, $\varphi(x,y)$.
          \item $\varphi(x,y)$ is a conformal mapping.
         \ei 
+      \bc
+         \includegraphics[height=1in]{figs/matlab-test-2}
+      \ec
 \end{frame}
 
 
@@ -240,7 +268,6 @@
 	\frametitle{Results}
        \bi
          \item Fit using both thin plate regression splines and P-splines with a comparison to the soap film (current best.) 
-      % table of MSE results?
          \item MSE used to compare over a grid of predicition points.
          \item Transformation method does well on the first horseshoe.
          \item Not so well for the alternate horseshoe. 
@@ -252,14 +279,14 @@
 	\frametitle{Horseshoe plots}
             \centering
             % trim order l b r t
-          \includegraphics[width=4in,trim=2in 1in 2in 1in]{figs/compsmooth}
+          \includegraphics[width=4in,trim=2in 1in 2in 0.5in]{figs/compsmooth}
 \end{frame}
 
 \begin{frame}
 	\frametitle{Alternate horseshoe plots}
             \centering
             % trim order l b r t
-          \includegraphics[width=4in,trim=2in 1in 2in 1in]{figs/altramsaycomp}
+          \includegraphics[width=4in,trim=2in 1in 2in 0.5in]{figs/altramsaycomp}
 \end{frame}
 
 \subsection{Analysis}
@@ -284,7 +311,8 @@
 	\frametitle{Why does it (sometimes) do worse?}
        \bi
          \item SC method still seems to approximate the gradient very well here.
-         \item 
+         \item Ignoring the two ends (problem with tensor products.)
+         \item Get around this with additional splines? 
        \ei
        \bc
           \includegraphics[width=4in]{figs/altcentrelinelineplots}\\
@@ -299,9 +327,6 @@
          \item Looking at alternative penalties for P-splines.
          \item Implementation is Matlab+R, would be nice to have something more coherent (and not Matlab.)
         \ei
-%        \bc
-%              \includegraphics[height=1.75in]{muw}
-%       \ec
 \end{frame}
 
 
