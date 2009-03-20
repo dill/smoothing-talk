@@ -252,14 +252,16 @@
 	\frametitle{The mapping}
       \bi
          \item Use a bounding box around the horseshoe.
+      \ei
       \bc
          \includegraphics[height=0.75in, trim=1in 1in 1in 0.75in]{figs/hswithboundingbox} 
       \ec
+      \bi
          \item Morphing the horseshoe shape still gives a slightly odd domain however, we are still doing better than before.
-      \bc
-          \includegraphics[height=0.75in, trim=1in 1in 1in 0.75in]{figs/hsgridmapping} 
-      \ec
       \ei
+      \bc\begin{tabular}{@{}cc}
+          \includegraphics[height=0.75in, trim=1in 1in 0in 0.75in]{figs/hsgridmapping-1} & \includegraphics[height=0.75in, trim=1in 1in 0in 0.75in]{figs/hsgridmapping-2} \\
+       \end{tabular}\ec
 \end{frame}
 
 
@@ -272,6 +274,10 @@
          \item Transformation method does well on the first horseshoe.
          \item Not so well for the alternate horseshoe. 
         \ei
+       \bc\begin{tabular}{@{}cc}
+          \includegraphics[width=2.5in]{figs/tensorproduct} & \includegraphics[width=1in]{figs/tprs}\\
+          Tensor product & Thin plate\\
+       \end{tabular}\ec
 \end{frame}
 
 
