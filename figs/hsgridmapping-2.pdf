@@ -29,31 +29,59 @@ endobj
 >>
 stream
 q
-Q q 59.04 73.44 126.72 47.52 re W n
-0.000 0.000 0.000 rg
-128.85 102.35 0.36 0.36 re f
-129.64 102.27 0.36 0.36 re f
-130.54 102.20 0.36 0.36 re f
-131.53 102.13 0.36 0.36 re f
-132.62 102.07 0.36 0.36 re f
-133.78 102.02 0.36 0.36 re f
-135.00 101.98 0.36 0.36 re f
-136.27 101.95 0.36 0.36 re f
-137.57 101.93 0.36 0.36 re f
-138.90 101.91 0.36 0.36 re f
-140.26 101.90 0.36 0.36 re f
-141.63 101.89 0.36 0.36 re f
-143.01 101.88 0.36 0.36 re f
-144.40 101.88 0.36 0.36 re f
-145.79 101.87 0.36 0.36 re f
-147.19 101.87 0.36 0.36 re f
-148.59 101.87 0.36 0.36 re f
-149.98 101.87 0.36 0.36 re f
-151.39 101.87 0.36 0.36 re f
-152.79 101.87 0.36 0.36 re f
-154.20 101.87 0.36 0.36 re f
-155.60 101.87 0.36 0.36 re f
-157.00 101.87 0.36 0.36 re f
+Q
+endstream
+endobj
+7 0 obj
+4
+endobj
+3 0 obj
+<<
+/Type /Pages
+/Kids [
+5 0 R
+]
+/Count 1
+/MediaBox [0 0 216 108]
+>>
+endobj
+4 0 obj
+<<
+/ProcSet [/PDF /Text]
+/Font <<>>
+/ExtGState << >>
+>>
+endobj
+8 0 obj
+<<
+/Type /Encoding
+/BaseEncoding /WinAnsiEncoding
+/Differences [ 45/minus 96/quoteleft
+144/dotlessi /grave /acute /circumflex /tilde /macron /breve /dotaccent
+/dieresis /.notdef /ring /cedilla /.notdef /hungarumlaut /ogonek /caron /space]
+>>
+endobj
+xref
+0 9
+0000000000 65535 f 
+0000000021 00000 n 
+0000000163 00000 n 
+0000000366 00000 n 
+0000000449 00000 n 
+0000000212 00000 n 
+0000000292 00000 n 
+0000000349 00000 n 
+0000000520 00000 n 
+trailer
+<<
+/Size 9
+/Info 1 0 R
+/Root 2 0 R
+>>
+startxref
+777
+%%EOF
+101.87 0.36 0.36 re f
 158.41 101.87 0.36 0.36 re f
 159.81 101.87 0.36 0.36 re f
 161.22 101.87 0.36 0.36 re f
