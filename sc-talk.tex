@@ -69,8 +69,6 @@
 
 \title[Smoothing over complex regions]{Two new approaches to smoothing over complex regions}
 
-%\subtitle{A mixture model approach}
-
 \author[Miller]{David Lawrence Miller}
 
 \institute{Mathematical Sciences\\University of Bath}
@@ -129,9 +127,8 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{Smoothing with GAMs}
+	\frametitle{Smoothing with penalties}
       \bi
-         \item Take a GLM, throw in some non-parametric components.
          \item Objective function takes the form:
       \ei
       \bc
@@ -140,8 +137,9 @@
       \end{equation*}
       \ec
       \bi
-         \item $f$ is the function you want to estimate, made up of basis functions, so $z_i = f(x_i,y_i;\theta) + \epsilon_i$.
-         \item $P$ is some penalty function, usually second squared derivative.
+         \item $f$ is the function you want to estimate, made up of some combination of basis functions.
+         \item $P$ is some squared derivative penalty operator, usually $P=(\frac{\partial^2}{\partial x^2}+\frac{\partial^2}{\partial y^2})^2$.
+         \item This can be generalized to an additive model or GAM.
       \ei
 \end{frame}
 
@@ -168,7 +166,7 @@
          \item FELSPLINE (Ramsay, (2002).)
          \item Within-area distance (Wang and Ranalli, (2007).)
          \item Soap film smoothers (Wood \emph{et al.} (2008).) 
-         \item Domain morphing (me!)
+         \item Domain morphing (Eilers (2006).)
         \ei
 \end{frame}
 
@@ -225,23 +223,6 @@
       \ec
 \end{frame}
 
-%\subsection{Ramsay's horseshoes}
-
-%\begin{frame}
-%	\frametitle{Ramsay's horseshoes}
-%       \bi
-%         \item Ramsay proposed a horseshoe test function that precisely demonstrates the problem. 
-%         \item An alternate function was also proposed.
-%         \item Simulation consisted of taking a sample from the functions, adding noise and then trying to fit a transformed model along with a soap film for comparison.
-%       \ei
-%       \bc\begin{tabular}{@{}cc}
-%          \includegraphics[width=1.5in, trim=1in 1in 1in 1in]{figs/ramsayhorseshoe} & \includegraphics[width=1.5in, trim=1in 1in 1in 1in]{figs/altramsayhorseshoe}\\
-%          Ramsay test function & Alternate Ramsay\\
-%           & test function\\
-%       \end{tabular}\ec
-
-%\end{frame}
-
 \subsection{Simulation Results}
 
 \begin{frame}
@@ -256,11 +237,9 @@
          \item Morphing the horseshoe shape still gives a slightly odd domain however, we are still doing better than before.
       \ei
       \bc\begin{tabular}{@{}cc}
-          \includegraphics[height=0.75in, trim=1in 1in 0in 0.75in]{figs/hsgridmapping-1} & \includegraphics[height=0.75in, trim=1in 1in 0in 0.75in]{figs/hsgridmapping-2} \\
+          \includegraphics[height=0.75in, trim=1in 1in 0in 0.75in]{figs/hsgridmapping-1} \\ \includegraphics[width=2in, trim=0in 0in 0in 0in]{figs/hsgridmapping-2} \\
        \end{tabular}\ec
 \end{frame}
-
-
 
 \begin{frame}
 	\frametitle{Results}
@@ -268,7 +247,6 @@
          \item Fit using both thin plate regression splines and P-splines with a comparison to the soap film (current best.) 
          \item MSE used to compare over a grid of predicition points.
          \item Transformation method does well on the horseshoe.
-%         \item Not so well for the alternate horseshoe. 
         \ei
        \bc\begin{tabular}{@{}cc}
           \includegraphics[width=2.5in]{figs/tensorproduct} & \includegraphics[width=1in]{figs/tprs}\\
@@ -284,17 +262,6 @@
           \includegraphics[width=4in,trim=2in 1in 2in 0.5in]{figs/compsmooth}
 \end{frame}
 
-
-%% Probably don't need this anymore
-%\begin{frame}
-%	\frametitle{Alternate horseshoe plots}
-%           \centering
-%            % trim order l b r t
-%          \includegraphics[width=4in,trim=2in 1in 2in 0.5in]{figs/altramsaycomp}
-%\end{frame}
-
-%\subsection{Analysis}
-
 \begin{frame}
 	\frametitle{Why does it do well?}
        \bi
@@ -304,8 +271,7 @@
        \bc\begin{tabular}{c c}
             \centering
             % trim order l b r t
-          \includegraphics[width=1in, trim=1in 0.75in 0.5in 0.5in]{figs/horseshoecentreline-1} & \includegraphics[width=2in]{figs/centrelinelineplots}\\
-%          \includegraphics[width=2in]{figs/horseshoecentreline-2} &\\
+          \includegraphics[width=1in, trim=1in 0.75in 0.5in 0.5in]{figs/horseshoecentreline-1} & \includegraphics[width=2.5in]{figs/centrelinelineplots}\\
        \end{tabular}\ec
 \end{frame}
 
@@ -336,25 +302,25 @@
 \begin{frame}
 	\frametitle{Multidimensional scaling and within-area distances}
        \bi
-         \item Idea: use MDS to to map points in the domain according to their distance within the domain.
+         \item Idea: use MDS to to arrange points in the domain according to their ``within-domain distance.''
          \item First need to find the within area distances.
-         \item Can then smooth over the mapped points.
-         \item Prediction outside the original data is fine, since we can insert new points using:
-         [[ formula from Julian]]
+         \item Can then smooth over the new points.
+
         \ei
 \end{frame}
 
 \begin{frame}
 	\frametitle{Multidimensional scaling refresher}
        \bi
-         \item First take the data matrix, $X$ (here $n$ by $2$ for 2D case.)
-         \item Double centre it (subtract row and column means.)
-         \item $XX^T$
-         \item Similar to principle components.
-
-            \centering
-              \includegraphics[width=3in]{figs/wt2-pco-example.pdf}\\
+         \item Double centre matrix of between point distances, $D$, (subtract row and column means) then find $DD^T$.
+         \item Finds a configuration of points such that \item Euclidean distance between points in new arrangement is approximately the same as distance in the domain.
+         \item Prediction outside the original data is fine.
+         \item Already implemented in \textsf{R} by \texttt{cmdscale}.
         \ei
+            \centering
+            % this is just generated from wt2-test.R
+              \includegraphics[width=3in]{figs/wt2-pco-example.pdf}\\
+        
 \end{frame}
 
 \begin{frame}
@@ -417,7 +383,8 @@
          \item H. Wang and M.G. Ranalli. \emph{Low-rank smoothing splines on complicated domains. Biometrics, 2007}
          \item T.A. Driscoll and L.N. Trefethen. \emph{Schwarz-Christoffel Mapping. Cambridge, 2002}
          \item T. Ramsay. \emph{Spline smoothing over difficult regions. JRSSB, 2001}
-         \item P.H.C Eilers, \emph{talk at munich....}
+         \item P.H.C Eilers, \emph{P-spline smoothing on difficult domains. University of Munich seminar, 2006}
+	\item C. Chatfield and A.J. Colins \emph{Introduction to multivariate analysis. CRC, 1980}
         \ei
 \end{frame}
 
