@@ -295,6 +295,8 @@
               \includegraphics[width=3in]{figs/wigglytop2-real}\\
 \end{frame}
 
+
+
 \section{Multidimensional Scaling}
 
 \subsection{Details}
@@ -326,10 +328,10 @@
 \begin{frame}
 	\frametitle{Finding within-area distances}
        \bi
-         \item Use a new algorithm of Simon's to find the within area distances.
+         \item Use a new algorithm to find the within area distances.
         \ei
             \centering
-              \includegraphics[width=2.5in]{figs/doubleyah-example.pdf}\\
+              \includegraphics[width=2.75in]{figs/doubleyah-example.pdf}\\
 \end{frame}
 
 
@@ -339,19 +341,19 @@
 \begin{frame}
 	\frametitle{Ramsay simulations (low noise)}
             \centering
-              \includegraphics[width=3in]{figs/ramsay-low.pdf}\\
+              \includegraphics[width=4in]{figs/ramsay-low.pdf}\\
 \end{frame}
 
 \begin{frame}
 	\frametitle{Ramsay simulations (high noise)}
             \centering
-              \includegraphics[width=3in]{figs/ramsay-high.pdf}\\
+              \includegraphics[width=4in]{figs/ramsay-high.pdf}\\
 \end{frame}
 
 \begin{frame}
 	\frametitle{A different domain}
             \centering
-              \includegraphics[width=3in]{figs/wt2-real.pdf}\\
+              \includegraphics[width=3.25in]{figs/wt2-real.pdf}\\
 \end{frame}
 
 \section{Conclusions}
@@ -360,10 +362,9 @@
 	\frametitle{Conclusions}
        \bi
          \item Seems that the S-C transform does not have much utility.
-         \item MDS shows more promise.
-         \item MDS easier to transfer to higher dimensions.
-         \item Solving the PDEs in soap is expensive.
-         \item After initial ``transform'' calculation, both methods only use the same computational time as a thin plate regression spline.
+         \item MDS shows more promise, easier to transfer to higher dimensions.
+         \item MDS does not impose strict boundary conditions so leakage still possible.
+         \item After initial ``transform'' calculation, both methods only use the same computational time as a thin plate regression spline. (Soap is expensive.)
         \ei
 \end{frame}
 
@@ -371,9 +372,9 @@
 	\frametitle{Further work}
        \bi
          \item Real data!
-         \item Pushing the data into more dimensions might be useful to separate points. 
+         \item Implement insertion of new points using method of Gower (1968).
          \item Current within-area distance algorithm is pure R, very slow. Need to re-write in C/Fortran.
-          
+         \item Pushing the data into more dimensions might be useful to separate points.  
         \ei
 \end{frame}
 
@@ -387,9 +388,11 @@
          \item H. Wang and M.G. Ranalli. \emph{Low-rank smoothing splines on complicated domains. Biometrics, 2007}
          \item T.A. Driscoll and L.N. Trefethen. \emph{Schwarz-Christoffel Mapping. Cambridge, 2002}
          \item T. Ramsay. \emph{Spline smoothing over difficult regions. JRSSB, 2001}
-         \item P.H.C. Eilers, \emph{P-spline smoothing on difficult domains. University of Munich seminar, 2006}
-	\item C. Chatfield and A.J. Colins \emph{Introduction to multivariate analysis. CRC, 1980}
+         \item P.H.C. Eilers. \emph{P-spline smoothing on difficult domains. University of Munich seminar, 2006}
+	\item C. Chatfield and A.J. Colins. \emph{Introduction to multivariate analysis. CRC, 1980}
+	\item J.C. Gower. \emph{Adding a point to vector diagrams in multivariate analysis. Biometrika, 1968.}
         \ei
+        Slides available at \url{http://people.bath.ac.uk/dlm27}
 \end{frame}
 
 
