@@ -354,12 +354,6 @@
               \includegraphics[width=3in]{figs/wt2-real.pdf}\\
 \end{frame}
 
-%\begin{frame}
-%	\frametitle{What are we doing?}
-%            \centering
-%              \includegraphics[width=3in]{figs/wt2-mds-coloured.pdf}\\
-%\end{frame}
-
 \section{Conclusions}
 
 \begin{frame}
@@ -368,6 +362,8 @@
          \item Seems that the S-C transform does not have much utility.
          \item MDS shows more promise.
          \item MDS easier to transfer to higher dimensions.
+         \item Solving the PDEs in soap is expensive.
+         \item After initial ``transform'' calculation, both methods only use the same computational time as a thin plate regression spline.
         \ei
 \end{frame}
 
@@ -376,6 +372,7 @@
        \bi
          \item Real data!
          \item Pushing the data into more dimensions might be useful to separate points. 
+         \item Current within-area distance algorithm is pure R, very slow. Need to re-write in C/Fortran.
           
         \ei
 \end{frame}
@@ -390,7 +387,7 @@
          \item H. Wang and M.G. Ranalli. \emph{Low-rank smoothing splines on complicated domains. Biometrics, 2007}
          \item T.A. Driscoll and L.N. Trefethen. \emph{Schwarz-Christoffel Mapping. Cambridge, 2002}
          \item T. Ramsay. \emph{Spline smoothing over difficult regions. JRSSB, 2001}
-         \item P.H.C Eilers, \emph{P-spline smoothing on difficult domains. University of Munich seminar, 2006}
+         \item P.H.C. Eilers, \emph{P-spline smoothing on difficult domains. University of Munich seminar, 2006}
 	\item C. Chatfield and A.J. Colins \emph{Introduction to multivariate analysis. CRC, 1980}
         \ei
 \end{frame}
