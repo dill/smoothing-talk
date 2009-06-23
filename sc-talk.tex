@@ -164,9 +164,9 @@
 	\frametitle{Possible solutions to leakage problems}
        \bi
          \item FELSPLINE (Ramsay, (2002).)
+         \item Domain morphing (Eilers (2006).)
          \item Within-area distance (Wang and Ranalli, (2007).)
          \item Soap film smoothers (Wood \emph{et al.} (2008).) 
-         \item Domain morphing (Eilers (2006).)
         \ei
 \end{frame}
 
@@ -297,6 +297,12 @@
 
 \begin{frame}
 	\frametitle{A more realistic domain - what's happening?}
+	\bi
+	\item Weird ``crowding'' effect.
+	\item Different with each vertex choice. All bad.
+	\ei
+	
+	
             \centering
               \includegraphics[width=3in]{figs/wt2-crowding.png}\\
 \end{frame}
@@ -319,7 +325,7 @@
 	\frametitle{Multidimensional scaling refresher}
        \bi
          \item Double centre matrix of between point distances, $D$, (subtract row and column means) then find $DD^T$.
-         \item Finds a configuration of points such that \item Euclidean distance between points in new arrangement is approximately the same as distance in the domain.
+         \item Finds a configuration of points such that Euclidean distance between points in new arrangement is approximately the same as distance in the domain.
          \item Prediction outside the original data is fine.
          \item Already implemented in \textsf{R} by \texttt{cmdscale}.
         \ei
