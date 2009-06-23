@@ -73,7 +73,7 @@
 
 \institute{Mathematical Sciences\\University of Bath}
 
-\date[23-25 June 2009] {Modelling complex environmental spatial and temporal data, Bath}
+\date[23-25 June 2009] {Modelling complex environmental spatial and temporal data, University of Bath}
 %\date[July 2009] {useR! 2009, Rennes}
 % - Either use conference name or its abbreviation.
 % - Not really informative to the audience, more for people (including
@@ -164,9 +164,9 @@
 	\frametitle{Possible solutions to leakage problems}
        \bi
          \item FELSPLINE (Ramsay, (2002).)
-         \item Domain morphing (Eilers (2006).)
+         \item Domain morphing (Eilers, (2006).)
          \item Within-area distance (Wang and Ranalli, (2007).)
-         \item Soap film smoothers (Wood \emph{et al.} (2008).) 
+         \item Soap film smoothers (Wood \emph{et al}, (2008).) 
         \ei
 \end{frame}
 
@@ -245,7 +245,6 @@
        \bi
          \item Fit using both thin plate regression splines and P-splines with a comparison to the soap film (current best.) 
          \item MSE used to compare over a grid of predicition points.
-         \item Transformation method does well on the horseshoe.
         \ei
        \bc\begin{tabular}{@{}cc}
           \includegraphics[width=2.5in]{figs/tensorproduct} & \includegraphics[width=1in]{figs/tprs}\\
@@ -278,12 +277,15 @@
 \begin{frame}
 	\frametitle{Problems}
        \bi
-         \item Implementation is Matlab+R.
-         \item Problems with more realistic situations:
+         \item Small:
+         \bi
+         \item Implementation is Matlab+R. (YUCK!)
+         \ei
+         \item \textbf{BIG}:
          \bi
          \item Weird artifacts.
-         \item Arbitrary selection of vertices.
          \item Morphing of domain appears to cause features to be smoothed over.
+         \item Arbitrary selection of vertices.
          \ei
         \ei
 \end{frame}
@@ -301,10 +303,10 @@
 	\item Weird ``crowding'' effect.
 	\item Different with each vertex choice. All bad.
 	\ei
-	
-	
-            \centering
+
+            \bc
               \includegraphics[width=3in]{figs/wt2-crowding.png}\\
+            \ec
 \end{frame}
 
 \section{Multidimensional Scaling}
@@ -315,8 +317,12 @@
 	\frametitle{Multidimensional scaling and within-area distances}
        \bi
          \item Idea: use MDS to to arrange points in the domain according to their ``within-domain distance.''
-         \item First need to find the within area distances.
-         \item Can then smooth over the new points.
+         \ei
+         \bc \textbf{Scheme:} \ec
+         \bi
+         \item First need to find the within-area distances.
+         \item Perform MDS on the matrix of within-area distances.
+         \item Smooth over the new points.
 
         \ei
 \end{frame}
@@ -326,7 +332,7 @@
        \bi
          \item Double centre matrix of between point distances, $D$, (subtract row and column means) then find $DD^T$.
          \item Finds a configuration of points such that Euclidean distance between points in new arrangement is approximately the same as distance in the domain.
-         \item Prediction outside the original data is fine.
+%         \item Prediction outside the original data is fine.
          \item Already implemented in \textsf{R} by \texttt{cmdscale}.
         \ei
             \centering
