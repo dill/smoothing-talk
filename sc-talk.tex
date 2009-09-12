@@ -74,7 +74,8 @@
 \institute{Mathematical Sciences\\University of Bath}
 
 %\date[23-25 June 2009] {Modelling complex environmental spatial and temporal data, University of Bath}
-\date[July 2009] {useR! 2009, Rennes}
+%\date[July 2009] {useR! 2009, Rennes}
+\date[September 2009] {CREEM}
 % - Either use conference name or its abbreviation.
 % - Not really informative to the audience, more for people (including
 %   yourself) who are reading the slides online
@@ -112,7 +113,7 @@
 
 \section{Smoothing over complex regions}
 
-\subsection{Intro}
+\subsection{Generalized Additive Models}
 
 \begin{frame}
 	\frametitle{Smoothing in 2 dimensions}
@@ -158,6 +159,19 @@
       \ei
 \end{frame}
 
+\begin{frame}
+	\frametitle{Basis functions}
+       \bi
+         \item P-splines
+          \bc
+         \includegraphics[width=2in]{figs/bsplines} 
+         \ec
+         \item Thin plate regression splines 
+         \bc
+         \includegraphics[width=1.25in]{figs/tprs} 
+         \ec
+        \ei
+\end{frame}
 
 \subsection{Solutions}
 
@@ -175,6 +189,7 @@
         \end{tabular}
         \ec
 \end{frame}
+
 
 \begin{frame}
 	\frametitle{Why morph the domain?}
@@ -213,6 +228,22 @@
 \end{frame}
 
 \begin{frame}
+\frametitle{Schwarz-Christoffel algorithm}
+       \bi
+         \item Start with a rectangle.
+         \item Add vertices.
+         \item Iteratively deform by changing angles.
+         \item Continue until the new shape is identical to the polygon.
+         \item We then have a function for the mapping, $\varphi(x,y)$.
+         \item $\varphi(x,y)$ is a conformal mapping.
+        \ei
+      \bc
+         \includegraphics[height=1in]{figs/matlab-test-2}
+      \ec
+\end{frame}
+
+
+\begin{frame}
 	\frametitle{The mapping}
       \bi
          \item Use a bounding box around the horseshoe.
@@ -228,19 +259,6 @@
        \end{tabular}\ec
 \end{frame}
 
-%\begin{frame}
-%	\frametitle{Results}
-%       \bi
-%         \item Fit using both thin plate regression splines and P-splines with a comparison to the soap film (current best.) 
-%         \item MSE used to compare over a grid of predicition points.
-%        \ei
-%       \bc\begin{tabular}{@{}cc}
-%          \includegraphics[width=2.5in]{figs/tensorproduct} & \includegraphics[width=1in]{figs/tprs}\\
-%          Tensor product & Thin plate\\
-%       \end{tabular}\ec
-%\end{frame}
-
-
 \begin{frame}
 	\frametitle{Horseshoe plots}
             \centering
@@ -248,18 +266,18 @@
           \includegraphics[width=4in,trim=2in 1in 2in 0.5in]{figs/compsmooth}
 \end{frame}
 
-%\begin{frame}
-%	\frametitle{Why does it do well?}
-%       \bi
-%         \item Looking at line plots, we can see the difference in gradient.
-%         \item SC method seems to approximate the gradient better.
-%       \ei
-%       \bc\begin{tabular}{c c}
-%            \centering
+\begin{frame}
+	\frametitle{Why does it do well?}
+       \bi
+         \item Looking at line plots, we can see the difference in gradient.
+         \item SC method seems to approximate the gradient better.
+       \ei
+       \bc\begin{tabular}{c c}
+            \centering
 %            % trim order l b r t
-%          \includegraphics[width=1in, trim=1in 0.75in 0.5in 0.5in]{figs/horseshoecentreline-1} & \includegraphics[width=2.5in]{figs/centrelinelineplots}\\
-%       \end{tabular}\ec
-%\end{frame}
+          \includegraphics[width=1in, trim=1in 0.75in 0.5in 0.5in]{figs/horseshoecentreline-1} & \includegraphics[width=2.5in]{figs/centrelinelineplots}\\
+       \end{tabular}\ec
+\end{frame}
 
 
 \begin{frame}
@@ -329,15 +347,32 @@
         
 \end{frame}
 
+\subsection{Finding the within-area distances}
+
 \begin{frame}
-	\frametitle{Finding within-area distances}
-       \bi
-         \item Use a new algorithm to find the within area distances.
-        \ei
+	\frametitle{Finding the path - 1}
             \centering
-              \includegraphics[width=2.75in]{figs/doubleyah-example.pdf}\\
+             % trim order l b r t
+              \includegraphics[width=2.75in]{figs/wood-1}\\
 \end{frame}
 
+\begin{frame}
+	\frametitle{Finding the path - 2}
+            \centering
+              \includegraphics[width=2.75in]{figs/wood-2}\\
+\end{frame}
+
+\begin{frame}
+	\frametitle{Finding the path - 3}
+            \centering
+              \includegraphics[width=2.75in]{figs/wood-3}\\
+\end{frame}
+
+\begin{frame}
+	\frametitle{Finding the path - 4}
+            \centering
+              \includegraphics[width=2.75in]{figs/wood-4}\\
+\end{frame}
 
 
 \subsection{Simulation Results}
