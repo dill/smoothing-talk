@@ -21,6 +21,10 @@
   % If you wish to uncover everything in a step-wise fashion, uncomment
   % the following command:
 %  \beamerdefaultoverlayspecification{<+->}
+
+% get rid of navigation panel
+\setbeamertemplate{navigation symbols}{} 
+
 	\newcommand{\tcr}{\textcolor{red}}
 }
 \mode<article>{
@@ -47,7 +51,9 @@
 
 \usepackage[english]{babel}
 \usepackage[latin1]{inputenc}
-\usepackage{times}
+\usepackage{helvet}
+\renewcommand*\familydefault{\sfdefault} %% Only if the base font of the document is to be sans serif
+%\usepackage{times}
 \usepackage[T1]{fontenc}
 \usepackage{graphics,graphicx,fancyhdr,color,amsmath,url,enumerate,alltt}
 \usepackage{epsf}
@@ -67,7 +73,7 @@
 \newcommand{\expect}[1]{\mathbb{E}\left[ #1 \right]}
 
 
-\title[Smoothing over complex regions]{Two new approaches to smoothing over complex regions}
+\title[Smoothing over complex regions]{Multidimensional scaling as a tool for smoothing over complex spatial regions}
 
 \author[Miller]{David Lawrence Miller}
 
@@ -75,7 +81,8 @@
 
 %\date[23-25 June 2009] {Modelling complex environmental spatial and temporal data, University of Bath}
 %\date[July 2009] {useR! 2009, Rennes}
-\date[September 2009] {CREEM}
+%\date[September 2009] {CREEM Seminar, 23 September 2009}
+\date[July 2010] {International Statistical Ecology Conference, 6-9 July 2010}
 % - Either use conference name or its abbreviation.
 % - Not really informative to the audience, more for people (including
 %   yourself) who are reading the slides online
@@ -113,7 +120,7 @@
 
 \section{Smoothing over complex regions}
 
-\subsection{Generalized Additive Models}
+\subsection{The problem}
 
 \begin{frame}
 	\frametitle{Smoothing in 2 dimensions}
@@ -123,17 +130,17 @@
          \item This problem is relatively easy if the domain is simple.
        \ei
        \bc
-         \includegraphics[width=2.5in]{figs/peninsula}
+         \includegraphics[width=2.5in]{figs/peninsula.png}
        \ec
 \end{frame}
 
 \begin{frame}
-	\frametitle{Smoothing over complex domains}
+	\frametitle{Leakage (or, ``whales don't live on glaciers'')}
        \bi
          \item Smoothing of complex domains makes this a lot more difficult.
          \item Problem of leakage.
+         \item Animals don't move in straight lines!
          \item Euclidean distance doesn't always make sense.
-         \item Models need to incorporate information about the intrinsic structure of the domain.
        \ei
        \bc\begin{tabular}{@{}cc}
           & \\
@@ -142,6 +149,8 @@
        \end{tabular}\ec
 \end{frame}
 
+\subsection{Generalized Additive Models}
+
 \begin{frame}
 	\frametitle{Smoothing with penalties}
       \bi
@@ -149,11 +158,11 @@
       \ei
       \bc
       \begin{equation*}
-      \sum_{i=1}^n (z_i-f(x_i,y_i;\theta))^2 + \lambda \int_\Omega Pf(x,y;\theta)d\Omega
+      \sum_{i=1}^n (z_i-\hat{f}(x_i,y_i;\hat{\theta}))^2 + \lambda \int_\Omega Pf(x,y;\hat{\theta})d\Omega
       \end{equation*}
       \ec
       \bi
-         \item $f$ is the function you want to estimate, made up of some combination of basis functions.
+         \item $\hat{f}$ is the function you want to estimate, made up of some combination of basis functions.
          \item $P$ is some squared derivative penalty operator, usually $P=(\frac{\partial^2}{\partial x^2}+\frac{\partial^2}{\partial y^2})^2$.
          \item This can be generalized to an additive model or GAM.
       \ei
@@ -162,11 +171,12 @@
 \begin{frame}
 	\frametitle{Basis functions}
        \bi
-         \item P-splines
+       	  \item Fall into two classes: knot- and eigen-based.
+         \item P-splines (Marx and Eilers, 1996)
           \bc
          \includegraphics[width=2in]{figs/bsplines} 
          \ec
-         \item Thin plate regression splines 
+         \item Thin plate regression splines (Wood, 2003)
          \bc
          \includegraphics[width=1.25in]{figs/tprs} 
          \ec
@@ -176,12 +186,18 @@
 \subsection{Solutions}
 
 \begin{frame}
-	\frametitle{Possible solutions to leakage problems}
+	\frametitle{Proposed solutions to leakage problems}
+	Two categories: PDE boundary condition based, within-area distance based.
        \bi
-         \item FELSPLINE (Ramsay, (2002).)
-         \item Domain morphing (Eilers, (2006).)
-         \item Within-area distance (Wang and Ranalli, (2007).)
-         \item Soap film smoothers (Wood \emph{et al}, (2008).) 
+         \item PDEs:
+	  \bi
+             \item FELSPLINE (Ramsay, 2002).
+             \item Soap film smoothers (Wood \emph{et al}, 2008).
+           \ei
+           \item Within-area distance
+           \bi
+             \item Within-area distance (Wang and Ranalli, 2007).
+           \ei
         \ei
         \bc\begin{tabular}{@{}cc}
           & \\
@@ -192,18 +208,20 @@
 
 
 \begin{frame}
-	\frametitle{Why morph the domain?}
+	\frametitle{``The Third Way''}
       \bi
+         \item Domain morphing.
          \item Takes into account within-area distance.
          \item Gives a known domain that is easier to smooth over.
          \item Potentially less computationally intensive. 
+         \item Eilers (2006) proposes Schwarz-Christoffel transform.
       \ei
       \bc
          \textbf{However:}
       \ec
       \bi
          \item Don't maintain isotropy - distribution of points odd.
-         \item Not clear what this does to the smoothness penalty.
+         \item Not clear what this does to the smoothness penalty - artefacts, penalty issues.
       \ei
       \bc
          \includegraphics[height=1in]{figs/matlab-test-3}
@@ -211,109 +229,6 @@
 \end{frame}
 
 
-\section{Schwarz-Christoffel transform}
-
-\begin{frame}
-	\frametitle{The Schwarz-Christoffel transform}
-       \bi
-         \item Take a polygon in some domain $W$ and morph it to a new domain $W^*$.
-         \item We then have a function for the mapping, $\varphi(x,y)$.
-         \item $\varphi(x,y)$ is a conformal mapping.
-         \item Do this by starting at the new domain and working back to the polygon.
-         \item Can draw a polygonal bounding box around some arbitrary shape.
-        \ei
-        \bc
-              \includegraphics[height=1in]{figs/mappingdia}
-       \ec
-\end{frame}
-
-\begin{frame}
-\frametitle{Schwarz-Christoffel algorithm}
-       \bi
-         \item Start with a rectangle.
-         \item Add vertices.
-         \item Iteratively deform by changing angles.
-         \item Continue until the new shape is identical to the polygon.
-         \item We then have a function for the mapping, $\varphi(x,y)$.
-         \item $\varphi(x,y)$ is a conformal mapping.
-        \ei
-      \bc
-         \includegraphics[height=1in]{figs/matlab-test-2}
-      \ec
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{The mapping}
-      \bi
-         \item Use a bounding box around the horseshoe.
-      \ei
-      \bc
-         \includegraphics[height=0.75in, trim=1in 1in 1in 0.75in]{figs/hswithboundingbox} 
-      \ec
-      \bi
-         \item Morphing the horseshoe shape still gives a slightly odd domain however, we are still doing better than before.
-      \ei
-      \bc\begin{tabular}{@{}cc}
-          \includegraphics[height=0.75in, trim=1in 1in 0in 0.75in]{figs/hsgridmapping-1} \\ \includegraphics[width=2in, trim=0in 0in 0in 0in]{figs/hsgridmapping-2} \\
-       \end{tabular}\ec
-\end{frame}
-
-\begin{frame}
-	\frametitle{Horseshoe plots}
-            \centering
-            % trim order l b r t
-          \includegraphics[width=4in,trim=2in 1in 2in 0.5in]{figs/compsmooth}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Why does it do well?}
-       \bi
-         \item Looking at line plots, we can see the difference in gradient.
-         \item SC method seems to approximate the gradient better.
-       \ei
-       \bc\begin{tabular}{c c}
-            \centering
-%            % trim order l b r t
-          \includegraphics[width=1in, trim=1in 0.75in 0.5in 0.5in]{figs/horseshoecentreline-1} & \includegraphics[width=2.5in]{figs/centrelinelineplots}\\
-       \end{tabular}\ec
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{Problems}
-       \bi
-         \item Small:
-         \bi
-         \item Implementation is Matlab+R. (YUCK!)
-         \ei
-         \item \textbf{BIG}:
-         \bi
-         \item Weird artifacts.
-         \item Morphing of domain appears to cause features to be smoothed over.
-         \item Arbitrary selection of vertices.
-         \ei
-        \ei
-\end{frame}
-
-\begin{frame}
-	\frametitle{A more realistic domain}
-            \centering
-              \includegraphics[width=3in]{figs/wigglytop2-real}\\
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{A more realistic domain - what's happening?}
-	\bi
-	\item Weird ``crowding'' effect.
-	\item Different with each vertex choice. All bad.
-	\ei
-
-            \bc
-              \includegraphics[width=3in]{figs/wt2-crowding.png}\\
-            \ec
-\end{frame}
 
 \section{Multidimensional Scaling}
 
@@ -322,12 +237,13 @@
 \begin{frame}
 	\frametitle{Multidimensional scaling and within-area distances}
        \bi
-         \item Idea: use MDS to to arrange points in the domain according to their ``within-domain distance.''
+         \item Idea: use MDS to to arrange points in the domain according to their distance within the domain.
          \ei
          \bc \textbf{Scheme:} \ec
          \bi
          \item First need to find the within-area distances.
          \item Perform MDS on the matrix of within-area distances.
+         \item Find the new configuration of the points.
          \item Smooth over the new points.
 
         \ei
@@ -336,30 +252,45 @@
 \begin{frame}
 	\frametitle{Multidimensional scaling refresher}
        \bi
-         \item Double centre matrix of between point distances, $D$, (subtract row and column means) then find $DD^T$.
+         \item Use double centred matrix of between point distances, $D$, using the eigen-decomposition of $DD^T$ we can find new points.
          \item Finds a configuration of points such that Euclidean distance between points in new arrangement is approximately the same as distance in the domain.
-%         \item Prediction outside the original data is fine.
-         \item Already implemented in \textsf{R} by \texttt{cmdscale}.
+          \item New points can be added into the MDS configuration via Gower's interpolation (Gower, 1968)
         \ei
             \centering
             % this is just generated from wt2-test.R
-              \includegraphics[width=3in]{figs/wt2-pco-example.pdf}\\
+              \includegraphics[width=3in]{figs/wt2-coloured.pdf}\\
         
 \end{frame}
 
 \subsection{Finding the within-area distances}
 
 \begin{frame}
+	\frametitle{A ``new'' algorithm for finding within-area distances}
+	\bi
+		\item Algorithm ``bounces'' around inside the polygon.
+		\item Initial path is just the path around the edge, then iterate over two steps: \textit{delete} and \textit{alter}.
+		\item Delete (iterating over all nodes):
+			\bi \item If we can shorten the path by simply deleting a node, do that.
+			\ei
+		\item Alter (iterating over all nodes):
+			\bi \item If we can find a shorter sub-path by bouncing off the other ``side'' of the polygon, do that.
+			\ei
+	\ei
+\end{frame}
+
+
+
+\begin{frame}
 	\frametitle{Finding the path - 1}
             \centering
              % trim order l b r t
-              \includegraphics[width=2.75in]{figs/wood-1}\\
+              \includegraphics[width=2.75in]{figs/wood-2}\\
 \end{frame}
 
 \begin{frame}
 	\frametitle{Finding the path - 2}
             \centering
-              \includegraphics[width=2.75in]{figs/wood-2}\\
+              \includegraphics[width=2.75in]{figs/wood-1}\\
 \end{frame}
 
 \begin{frame}
@@ -392,23 +323,57 @@
 \begin{frame}
 	\frametitle{A different domain}
             \centering
-              \includegraphics[width=3.25in]{figs/wt2-real.pdf}\\
+              \includegraphics[width=4.5in]{figs/wt2-real.pdf}\\
 \end{frame}
+
+\begin{frame}
+	\frametitle{The Aral sea}
+            \centering
+              \includegraphics[height=3in]{figs/aral-fit.pdf}\\
+\end{frame}
+
+\begin{frame}
+	\frametitle{So, it looks good, but...}
+          \bi
+            \item Computationally costly to find the within-area distances. (Esp. prediction.)
+            \item Comparative in MSE terms to the soap film smoother.
+            \item Artefacts.
+            \item Taking a $m$-D projection of $n$-D space.
+           \ei
+            \centering
+              \includegraphics[height=1.5in]{figs/wt2-3d-proj.pdf}\\           
+\end{frame}
+
+\begin{frame}
+	\frametitle{Can we get around the squashing?}
+          \bi
+            \item Adjust penalty:
+          \ei
+            \begin{equation*}
+            \int\int_\Omega \mathcal{L}^*(x,y) \Big(\frac{\partial^2 f(x,y)}{\partial x^2} + \frac{\partial^2 f(x,y)}{\partial y^2}\Big)^2 \text{d}x\text{d}y.
+            \end{equation*}
+            \bi
+            \item $\mathcal{L}^*(x,y)$, a function of point density in the new space.
+            \item Wood (2000) - linear, one direction of rescaling.
+            \item  Doesn't take into account re-ordering of points.
+            \item 3-D projection does better, but can we keep going?
+          \ei
+\end{frame}
+
+
 
 \section{Conclusions}
 
 \begin{frame}
-	\frametitle{Conclusions}
-       \bi
-         \item Seems that the S-C transform does not have much utility.
-         \item MDS shows more promise, easier to transfer to higher dimensions.
-         \item MDS does not impose strict boundary conditions so leakage still possible.
-         \item Pushing the data into more dimensions might be useful to separate points.  
-         \item After initial ``transform'' calculation, both methods only use the same computational time as a thin plate regression spline. (Soap is expensive.)
-
-        \ei
+	\frametitle{Smoothing using domain transformation manifesto}
+          \bi
+            \item No crowding.
+            \item Maintain order.
+            \item Smooth mapping.
+            \item Fast mapping.
+           \ei
+         \bc \textbf{The key: transform ``just enough'' but no more.} \ec
 \end{frame}
-
 
 \begin{frame}
 	\frametitle{References}
@@ -416,10 +381,10 @@
          \item S.N. Wood, M.V. Bravington, and S.L. Hedley. \emph{Soap film smoothing. JRSSB, 2008}
          \item H. Wang and M.G. Ranalli. \emph{Low-rank smoothing splines on complicated domains. Biometrics, 2007}
          \item T.A. Driscoll and L.N. Trefethen. \emph{Schwarz-Christoffel Mapping. Cambridge, 2002}
-         \item T. Ramsay. \emph{Spline smoothing over difficult regions. JRSSB, 2001}
+         \item T. Ramsay. \emph{Spline smoothing over difficult regions. JRSSB, 2002}
          \item P.H.C. Eilers. \emph{P-spline smoothing on difficult domains. University of Munich seminar, 2006}
 %	\item C. Chatfield and A.J. Colins. \emph{Introduction to multivariate analysis. CRC, 1980}
-	\item J.C. Gower. \emph{Adding a point to vector diagrams in multivariate analysis. Biometrika, 1968.}
+	\item J.C. Gower. \emph{Adding a point to vector diagrams in multivariate analysis. Biometrika, 1968.}x
         \ei
         Slides available at \url{http://people.bath.ac.uk/dlm27}
 \end{frame}
