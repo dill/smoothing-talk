@@ -159,7 +159,10 @@
       \bi
         \item Do smoothing with splines in an additive model framework.
         \item Take some linear combination of (known) basis functions.
-        \item Penalize based on integral of second squared derivative - $(\frac{\partial^2f(x,y)}{\partial x^2}+\frac{\partial^2f(x,y)}{\partial y^2})^2$.
+        \item Penalize based on integral of second squared derivative:
+            \begin{equation*}
+	            \int\int_\Omega \Big( \Big(\frac{\partial^2 f(x,y)}{\partial x^2}\Big)^2 + 2\Big(\frac{\partial^2 f(x,y)}{\partial x \partial y}\Big)^2 + \Big(\frac{\partial^2 f(x,y)}{\partial y^2}\Big)^2\Big) \text{d}x\text{d}y.
+            \end{equation*}
         \item Here using thin plate regression splines (eg Wood (2003)).
         \includegraphics[width=4in]{figs/tprsex} 
       \ei
@@ -362,28 +365,54 @@
               \includegraphics[height=1.5in]{figs/wt2-3d-proj.pdf}\\           
 \end{frame}
 
-%\begin{frame}
-%	\frametitle{Can we get around the squashing?}
-%          \bi
-%            \item Adjust penalty:
-%          \ei
-%            \begin{equation*}
-%            \int\int_\Omega \mathcal{L}^*(x,y) \Big(\frac{\partial^2 f(x,y)}{\partial x^2} + \frac{\partial^2 f(x,y)}{\partial y^2}\Big)^2 \text{d}x\text{d}y.
-%            \end{equation*}
-%            \bi
-%            \item $\mathcal{L}^*(x,y)$, a function of point density in the new space.
-%            \item Wood (2000) - linear, one direction of rescaling.
-%            \item  Doesn't take into account re-ordering of points.
-%            \item 3-D projection does better, but can we keep going?
-%          \ei
-%\end{frame}
+\begin{frame}
+	\frametitle{Can we get around the squashing?}
+		\bi
+             \item 3-D projection does better, but can we keep going? (Nullspace gets BIG!)
+			\item For anisotropic smoothing, Wood (2000) suggests: 
+		\ei
+		\begin{equation*}
+            \int\int_\Omega \Big(\frac{\partial^2 f(x,y)}{\partial x^2}\Big)^2 + 2k\Big(\frac{\partial^2 f(x,y)}{\partial x \partial y}\Big)^2 + k^3 \Big(\frac{\partial^2 f(x,y)}{\partial y^2}\Big)^2 \text{d}x\text{d}y.
+            \end{equation*}
+		\bi
+			\item $\mathcal{L}^*(x,y)$, a function of point density in the new space.
+              \item Adjust penalty:
+          \ei
+            \begin{equation*}
+	            \int\int_\Omega \mathcal{L}^*(x,y) \Big( \Big(\frac{\partial^2 f(x,y)}{\partial x^2}\Big)^2 + \Big(\frac{\partial^2 f(x,y)}{\partial x \partial y}\Big)^2 + \Big(\frac{\partial^2 f(x,y)}{\partial y^2}\Big)^2\Big) \text{d}x\text{d}y.
+            \end{equation*}
+           \bi
+           	\item Some improvements in MSE terms, doesn't get rid of all artefacts.
+		\ei
+\end{frame}
 
+\begin{frame}
+	\frametitle{Calculating $\mathcal{L}^*(x,y)$}
+	\centering
+              \includegraphics[height=3.5in]{figs/densgrid.pdf}
+\end{frame}
 
+\begin{frame}
+	\frametitle{Ordering}
+	\bi
+		\item So, where are the artefacts coming from?
+		\item Taking projections of $n$-dimensional space.
+		\item Points can lose ordering.
+	\ei
+	\centering
+              \includegraphics[height=1.75in]{figs/comb.pdf} \includegraphics[height=1.75in]{figs/comb-2d.pdf}
+\end{frame}
 
 \section{Conclusions}
 
 \begin{frame}
-	\frametitle{Smoothing using domain transformation manifesto}
+	\frametitle{Final comments}
+		\bi
+			\item Clearly, not that useful in practise.
+			\item Smoothing on manifolds?
+			\item Better idea of what is required to make domain transformation work in general.
+		\ei
+		\textbf{Criteria for domain transformation techniques:}
           \bi
             \item No crowding.
             \item Maintain order.
@@ -407,5 +436,10 @@
         Slides available at \url{http://people.bath.ac.uk/dlm27}
 \end{frame}
 
+\begin{frame}
+	\frametitle{Appendix - Ordering problems in 4-D}
+	\centering
+            \includegraphics[height=3in]{figs/comb-4d.pdf}	
+\end{frame}
 
 \end{document}
