@@ -82,7 +82,10 @@
 %\date[23-25 June 2009] {Modelling complex environmental spatial and temporal data, University of Bath}
 %\date[July 2009] {useR! 2009, Rennes}
 %\date[September 2009] {CREEM Seminar, 23 September 2009}
-\date[July 2010] {International Statistical Ecology Conference, 6-9 July 2010}
+%\date[July 2010] {International Statistical Ecology Conference, 6-9 July 2010}
+% PDRA interview, St Andrews 18 Jan 2011
+
+
 % - Either use conference name or its abbreviation.
 % - Not really informative to the audience, more for people (including
 %   yourself) who are reading the slides online
@@ -135,11 +138,11 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{Leakage (or, ``whales don't live on glaciers'')}
+	\frametitle{Leakage (or, ``whales don't live in glaciers'')}
        \bi
          \item Smoothing of complex domains makes this a lot more difficult.
          \item Problem of leakage.
-         \item Animals don't move in straight lines!
+         \item Wrong metric.
          \item Euclidean distance doesn't always make sense.
        \ei
        \bc\begin{tabular}{@{}cc}
@@ -149,39 +152,54 @@
        \end{tabular}\ec
 \end{frame}
 
-\subsection{Generalized Additive Models}
+\subsection{Smoothing with splines}
 
 \begin{frame}
 	\frametitle{Smoothing with penalties}
       \bi
-         \item Objective function takes the form:
-      \ei
-      \bc
-      \begin{equation*}
-      \sum_{i=1}^n (z_i-\hat{f}(x_i,y_i;\hat{\theta}))^2 + \lambda \int_\Omega Pf(x,y;\hat{\theta})d\Omega
-      \end{equation*}
-      \ec
-      \bi
-         \item $\hat{f}$ is the function you want to estimate, made up of some combination of basis functions.
-         \item $P$ is some squared derivative penalty operator, usually $P=(\frac{\partial^2}{\partial x^2}+\frac{\partial^2}{\partial y^2})^2$.
-         \item This can be generalized to an additive model or GAM.
+        \item Do smoothing with splines in an additive model framework.
+        \item Take some linear combination of (known) basis functions.
+        \item Penalize based on integral of second squared derivative - $(\frac{\partial^2f(x,y)}{\partial x^2}+\frac{\partial^2f(x,y)}{\partial y^2})^2$.
+        \item Here using thin plate regression splines (eg Wood (2003)).
+        \includegraphics[width=4in]{figs/tprsex} 
       \ei
 \end{frame}
 
-\begin{frame}
-	\frametitle{Basis functions}
-       \bi
-       	  \item Fall into two classes: knot- and eigen-based.
-         \item P-splines (Marx and Eilers, 1996)
-          \bc
-         \includegraphics[width=2in]{figs/bsplines} 
-         \ec
-         \item Thin plate regression splines (Wood, 2003)
-         \bc
-         \includegraphics[width=1.25in]{figs/tprs} 
-         \ec
-        \ei
-\end{frame}
+
+%\begin{frame}
+%	\frametitle{Smoothing with penalties}
+%      \bi
+%         \item Objective function takes the form:
+%      \ei
+%      \bc
+%      \begin{equation*}
+%      \sum_{i=1}^n (z_i-\hat{f}(x_i,y_i;\hat{\theta}))^2 + \lambda \int_\Omega Pf(x,y;\hat{\theta})d\Omega
+%      \end{equation*}
+%      \ec
+%      \bi
+%         \item $\hat{f}$ is the function you want to estimate, made up of some combination of basis functions.
+%         \item $P$ is some squared derivative penalty operator, usually $P=(\frac{\partial^2}{\partial x^2}+\frac{\partial^2}{\partial y^2})^2$.
+%         \item This can be generalized to an additive model or GAM.
+%      \ei
+%\end{frame}
+%
+%\begin{frame}
+%	\frametitle{Basis functions}
+%       \bi
+%       	  \item Fall into two classes: knot- and eigen-based.
+%         \item P-splines (Marx and Eilers, 1996)
+%          \bc
+%         \includegraphics[width=2in]{figs/bsplines} 
+%         \ec
+%         \item Thin plate regression splines (Wood, 2003)
+%         \bc
+%         \includegraphics[width=1.25in]{figs/tprs} 
+%         \ec
+%        \ei
+%\end{frame}
+
+
+
 
 \subsection{Solutions}
 
@@ -344,21 +362,21 @@
               \includegraphics[height=1.5in]{figs/wt2-3d-proj.pdf}\\           
 \end{frame}
 
-\begin{frame}
-	\frametitle{Can we get around the squashing?}
-          \bi
-            \item Adjust penalty:
-          \ei
-            \begin{equation*}
-            \int\int_\Omega \mathcal{L}^*(x,y) \Big(\frac{\partial^2 f(x,y)}{\partial x^2} + \frac{\partial^2 f(x,y)}{\partial y^2}\Big)^2 \text{d}x\text{d}y.
-            \end{equation*}
-            \bi
-            \item $\mathcal{L}^*(x,y)$, a function of point density in the new space.
-            \item Wood (2000) - linear, one direction of rescaling.
-            \item  Doesn't take into account re-ordering of points.
-            \item 3-D projection does better, but can we keep going?
-          \ei
-\end{frame}
+%\begin{frame}
+%	\frametitle{Can we get around the squashing?}
+%          \bi
+%            \item Adjust penalty:
+%          \ei
+%            \begin{equation*}
+%            \int\int_\Omega \mathcal{L}^*(x,y) \Big(\frac{\partial^2 f(x,y)}{\partial x^2} + \frac{\partial^2 f(x,y)}{\partial y^2}\Big)^2 \text{d}x\text{d}y.
+%            \end{equation*}
+%            \bi
+%            \item $\mathcal{L}^*(x,y)$, a function of point density in the new space.
+%            \item Wood (2000) - linear, one direction of rescaling.
+%            \item  Doesn't take into account re-ordering of points.
+%            \item 3-D projection does better, but can we keep going?
+%          \ei
+%\end{frame}
 
 
 
@@ -384,7 +402,7 @@
          \item T. Ramsay. \emph{Spline smoothing over difficult regions. JRSSB, 2002}
          \item P.H.C. Eilers. \emph{P-spline smoothing on difficult domains. University of Munich seminar, 2006}
 %	\item C. Chatfield and A.J. Colins. \emph{Introduction to multivariate analysis. CRC, 1980}
-	\item J.C. Gower. \emph{Adding a point to vector diagrams in multivariate analysis. Biometrika, 1968.}x
+	\item J.C. Gower. \emph{Adding a point to vector diagrams in multivariate analysis. Biometrika, 1968.}
         \ei
         Slides available at \url{http://people.bath.ac.uk/dlm27}
 \end{frame}
