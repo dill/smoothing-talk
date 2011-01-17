@@ -161,7 +161,7 @@
         \item Take some linear combination of (known) basis functions.
         \item Penalize based on integral of second squared derivative:
             \begin{equation*}
-	            \int\int_\Omega \Big( \Big(\frac{\partial^2 f(x,y)}{\partial x^2}\Big)^2 + 2\Big(\frac{\partial^2 f(x,y)}{\partial x \partial y}\Big)^2 + \Big(\frac{\partial^2 f(x,y)}{\partial y^2}\Big)^2\Big) \text{d}x\text{d}y.
+	            \int\int_\Omega \Big( \Big(\frac{\partial^2 f(x,y)}{\partial x^2}\Big)^2 + \Big(\frac{\partial^2 f(x,y)}{\partial x \partial y}\Big)^2 + \Big(\frac{\partial^2 f(x,y)}{\partial y^2}\Big)^2\Big) \text{d}x\text{d}y.
             \end{equation*}
         \item Here using thin plate regression splines (eg Wood (2003)).
         \includegraphics[width=4in]{figs/tprsex} 
@@ -217,7 +217,7 @@
            \ei
            \item Within-area distance
            \bi
-             \item Within-area distance (Wang and Ranalli, 2007).
+             \item Geodesic Low-Rank  Thin Plate Splines (GLTPS) (Wang and Ranalli, 2007).
            \ei
         \ei
         \bc\begin{tabular}{@{}cc}
@@ -231,18 +231,18 @@
 \begin{frame}
 	\frametitle{``The Third Way''}
       \bi
-         \item Domain morphing.
+         \item Domain morphing - think of domain as silly putty.
          \item Takes into account within-area distance.
-         \item Gives a known domain that is easier to smooth over.
          \item Potentially less computationally intensive. 
          \item Eilers (2006) proposes Schwarz-Christoffel transform.
+         \item Gives a known domain - easier to smooth over.
       \ei
       \bc
          \textbf{However:}
       \ec
       \bi
-         \item Don't maintain isotropy - distribution of points odd.
-         \item Not clear what this does to the smoothness penalty - artefacts, penalty issues.
+         \item Crowding - numerical singularities.
+         \item Not clear what this does to the smoothness penalty - artefacts, penalty issues - but NOT GOOD!
       \ei
       \bc
          \includegraphics[height=1in]{figs/matlab-test-3}
@@ -341,11 +341,11 @@
 %              \includegraphics[width=4in]{figs/ramsay-high.pdf}\\
 %\end{frame}
 
-\begin{frame}
-	\frametitle{A different domain}
-            \centering
-              \includegraphics[width=4.5in]{figs/wt2-real.pdf}\\
-\end{frame}
+%\begin{frame}
+%	\frametitle{A different domain}
+%            \centering
+%              \includegraphics[width=4.5in]{figs/wt2-real.pdf}\\
+%\end{frame}
 
 \begin{frame}
 	\frametitle{The Aral sea}
@@ -372,7 +372,7 @@
 			\item For anisotropic smoothing, Wood (2000) suggests: 
 		\ei
 		\begin{equation*}
-            \int\int_\Omega \Big(\frac{\partial^2 f(x,y)}{\partial x^2}\Big)^2 + 2k\Big(\frac{\partial^2 f(x,y)}{\partial x \partial y}\Big)^2 + k^3 \Big(\frac{\partial^2 f(x,y)}{\partial y^2}\Big)^2 \text{d}x\text{d}y.
+            \int\int_\Omega \Big(\frac{\partial^2 f(x,y)}{\partial x^2}\Big)^2 + k\Big(\frac{\partial^2 f(x,y)}{\partial x \partial y}\Big)^2 + k^3 \Big(\frac{\partial^2 f(x,y)}{\partial y^2}\Big)^2 \text{d}x\text{d}y.
             \end{equation*}
 		\bi
 			\item $\mathcal{L}^*(x,y)$, a function of point density in the new space.
