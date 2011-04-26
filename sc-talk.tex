@@ -258,7 +258,7 @@
 \begin{frame}
 	\frametitle{Multidimensional scaling and within-area distances}
        \bi
-         \item Idea: use MDS to to arrange points in the domain according to their distance within the domain.
+         \item Idea: use MDS to arrange points in the domain according to their distance within the domain.
          \ei
          \bc \textbf{Scheme:} \ec
          \bi
@@ -287,19 +287,9 @@
 
 \begin{frame}
 	\frametitle{A ``new'' algorithm for finding within-area distances}
-	\bi
-		\item Algorithm ``bounces'' around inside the polygon.
-		\item Initial path is just the path around the edge, then iterate over two steps: \textit{delete} and \textit{alter}.
-		\item Delete (iterating over all nodes):
-			\bi \item If we can shorten the path by simply deleting a node, do that.
-			\ei
-		\item Alter (iterating over all nodes):
-			\bi \item If we can find a shorter sub-path by bouncing off the other ``side'' of the polygon, do that.
-			\ei
-	\ei
+
+	\bc \textbf{So, how do we find the distances to put in D?}\ec
 \end{frame}
-
-
 
 \begin{frame}
 	\frametitle{Finding the path - 1}
@@ -326,8 +316,13 @@
               \includegraphics[width=2.75in]{figs/wood-4}\\
 \end{frame}
 
-
 \subsection{Simulation Results}
+
+\begin{frame}
+	\frametitle{Simulations}
+	\bc \textbf{But how does it perform?}\ec
+\end{frame}
+
 
 \begin{frame}
 	\frametitle{Ramsay simulations}
@@ -368,7 +363,6 @@
 \begin{frame}
 	\frametitle{Can we get around the squashing?}
 		\bi
-             \item 3-D projection does better, but can we keep going? (Nullspace gets BIG!)
 			\item For anisotropic smoothing, Wood (2000) suggests: 
 		\ei
 		\begin{equation*}
@@ -398,6 +392,7 @@
 		\item So, where are the artefacts coming from?
 		\item Taking projections of $n$-dimensional space.
 		\item Points can lose ordering.
+		\item 3-D projection does better, but can we keep going? (Nullspace gets BIG!)
 	\ei
 	\centering
               \includegraphics[height=1.75in]{figs/comb.pdf} \includegraphics[height=1.75in]{figs/comb-2d.pdf}
@@ -413,9 +408,9 @@
 		\ei
 		\textbf{Criteria for domain transformation techniques:}
           \bi
-            \item No crowding.
-            \item Maintain order.
+            \item Minimize squashing. No crowding.
             \item Smooth mapping.
+            \item Maintain order.
             \item Fast mapping.
            \ei
          \bc \textbf{The key: transform ``just enough'' but no more.} \ec
@@ -443,5 +438,20 @@
 	\centering
             \includegraphics[height=3in]{figs/comb-4d.pdf}	
 \end{frame}
+
+\begin{frame}
+	\frametitle{Appendix - A ``new'' algorithm for finding within-area distances}
+	\bi
+		\item Algorithm ``bounces'' around inside the polygon.
+		\item Initial path is just the path around the edge, then iterate over two steps: \textit{delete} and \textit{alter}.
+		\item Delete (iterating over all nodes):
+			\bi \item If we can shorten the path by simply deleting a node, do that.
+			\ei
+		\item Alter (iterating over all nodes):
+			\bi \item If we can find a shorter sub-path by bouncing off the other ``side'' of the polygon, do that.
+			\ei
+	\ei
+\end{frame}
+
 
 \end{document}
