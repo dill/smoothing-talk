@@ -72,8 +72,10 @@
 \newcommand{\ees}{\end{eqnarray*}}
 \newcommand{\expect}[1]{\mathbb{E}\left[ #1 \right]}
 
+\usefonttheme[onlymath]{serif}
 
-\title[Smoothing over complex regions]{Multidimensional scaling as a tool for smoothing over complex spatial regions}
+
+\title[Smoothing over complex regions]{Using multidimensional scaling with Duchon splines for reliable finite area smoothing}
 
 \author[Miller]{David Lawrence Miller}
 
@@ -84,7 +86,7 @@
 %\date[September 2009] {CREEM Seminar, 23 September 2009}
 %\date[July 2010] {International Statistical Ecology Conference, 6-9 July 2010}
 % PDRA interview, St Andrews 18 Jan 2011
-
+\date[5 May 2011] {Recent advances in spatial statistics in ecology\\5 May 2011\\St Andrews}
 
 % - Either use conference name or its abbreviation.
 % - Not really informative to the audience, more for people (including
@@ -168,41 +170,7 @@
       \ei
 \end{frame}
 
-
-%\begin{frame}
-%	\frametitle{Smoothing with penalties}
-%      \bi
-%         \item Objective function takes the form:
-%      \ei
-%      \bc
-%      \begin{equation*}
-%      \sum_{i=1}^n (z_i-\hat{f}(x_i,y_i;\hat{\theta}))^2 + \lambda \int_\Omega Pf(x,y;\hat{\theta})d\Omega
-%      \end{equation*}
-%      \ec
-%      \bi
-%         \item $\hat{f}$ is the function you want to estimate, made up of some combination of basis functions.
-%         \item $P$ is some squared derivative penalty operator, usually $P=(\frac{\partial^2}{\partial x^2}+\frac{\partial^2}{\partial y^2})^2$.
-%         \item This can be generalized to an additive model or GAM.
-%      \ei
-%\end{frame}
-%
-%\begin{frame}
-%	\frametitle{Basis functions}
-%       \bi
-%       	  \item Fall into two classes: knot- and eigen-based.
-%         \item P-splines (Marx and Eilers, 1996)
-%          \bc
-%         \includegraphics[width=2in]{figs/bsplines} 
-%         \ec
-%         \item Thin plate regression splines (Wood, 2003)
-%         \bc
-%         \includegraphics[width=1.25in]{figs/tprs} 
-%         \ec
-%        \ei
-%\end{frame}
-
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Solutions}
 
@@ -227,6 +195,9 @@
         \ec
 \end{frame}
 
+\begin{frame}
+	\frametitle{Explanation of FELSPLINE/soap/GLTPS}
+\end{frame}
 
 \begin{frame}
 	\frametitle{``The Third Way''}
@@ -349,7 +320,7 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{So, it looks good, but...}
+	\frametitle{So, it looks good...}
           \bi
             \item Computationally costly to find the within-area distances. (Esp. prediction.)
             \item Comparative in MSE terms to the soap film smoother.
@@ -360,31 +331,7 @@
               \includegraphics[height=1.5in]{figs/wt2-3d-proj.pdf}\\           
 \end{frame}
 
-\begin{frame}
-	\frametitle{Can we get around the squashing?}
-		\bi
-			\item For anisotropic smoothing, Wood (2000) suggests: 
-		\ei
-		\begin{equation*}
-            \int\int_\Omega \Big(\frac{\partial^2 f(x,y)}{\partial x^2}\Big)^2 + k\Big(\frac{\partial^2 f(x,y)}{\partial x \partial y}\Big)^2 + k^3 \Big(\frac{\partial^2 f(x,y)}{\partial y^2}\Big)^2 \text{d}x\text{d}y.
-            \end{equation*}
-		\bi
-			\item $\mathcal{L}^*(x,y)$, a function of point density in the new space.
-              \item Adjust penalty:
-          \ei
-            \begin{equation*}
-	            \int\int_\Omega \mathcal{L}^*(x,y) \Big( \Big(\frac{\partial^2 f(x,y)}{\partial x^2}\Big)^2 + \Big(\frac{\partial^2 f(x,y)}{\partial x \partial y}\Big)^2 + \Big(\frac{\partial^2 f(x,y)}{\partial y^2}\Big)^2\Big) \text{d}x\text{d}y.
-            \end{equation*}
-           \bi
-           	\item Some improvements in MSE terms, doesn't get rid of all artefacts.
-		\ei
-\end{frame}
 
-\begin{frame}
-	\frametitle{Calculating $\mathcal{L}^*(x,y)$}
-	\centering
-              \includegraphics[height=3.5in]{figs/densgrid.pdf}
-\end{frame}
 
 \begin{frame}
 	\frametitle{Ordering}
@@ -397,6 +344,136 @@
 	\centering
               \includegraphics[height=1.75in]{figs/comb.pdf} \includegraphics[height=1.75in]{figs/comb-2d.pdf}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{High dimensional smoothing with Duchon splines}
+
+\subsection{Nullspaces}
+
+%% say something about radial functions + ``planes''
+\begin{frame}
+	\frametitle{Nullspaces}
+	\bi
+		\item TPRS functions of the form:
+		\begin{align*}
+		f(\mathbf{x}) &= \sum_{i=1}^n \delta_i \eta_{md}(\mathbf{x}-\mathbf{x_i}) + \sum_{j=1}^M \alpha_j \phi_j(\mathbf{x})\\
+		&= \text{radial basis functions} + \text{``planes''}
+		\end{align*}
+		\item $\phi_j(\mathbf{x})$ are linearly independent polynomials of degree $< m$.
+	\ei
+\end{frame}
+
+
+% why high dimensions are bad in tprs
+%	diagram of nullspace sizes
+\begin{frame}
+	\frametitle{When nullspaces get big...(I)}
+	\bi
+		\item For TPRS, nullspace size is 
+		\begin{equation*}
+			M=\begin{pmatrix} m+d-1 \\ d  \end{pmatrix}
+		\end{equation*}
+		Where \begin{align*}
+				m &= \text{the derivative order in the penalty}\\
+				d &= \text{smoothing dimension}
+			\end{align*}
+		\item \textbf{AND} must obey $2m>d$ \\smoothing dimension++ $\Rightarrow$ derivative penalty++++.
+		\item $M$ gets very big, very fast.
+	\ei
+\end{frame}
+
+\begin{frame}
+	\frametitle{When nullspaces get big... (II)}
+	\begin{figure}
+	\centering
+			\includegraphics[height=3.4in]{figs/nullspace-dim.pdf} 
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{A brief digression into Fourier transforms (I)} 
+	\bi
+		\item Given some function, we can take the Fourier transform:
+		\begin{equation*}
+			\mathfrak{F} g(\boldsymbol{\tau}) = \int \ldots \int_{\mathbb{R}^n} e^{2 \pi \sqrt{-1} \mathbf{x}^\text{T} \boldsymbol{\tau}} g(\mathbf{x}) \text{d}\mathbf{x}.
+		\end{equation*}
+		\item Can think of this as a change of basis \textbf{OR} as decomposing the function into frequency components.	
+	\ei
+\end{frame}
+
+%\begin{frame}
+%	\frametitle{A brief digression into Fourier transforms (II)} 
+%	\bi
+%		\item 
+%	\ei
+%\end{frame}
+
+
+
+% digression into Fourier transforms
+
+% build up to Duchon splines
+%	diagram of nullspace sizes
+% talk about manifolds
+
+\subsection{Duchon splines}
+
+\begin{frame}
+	\frametitle{Enter Jean Duchon...} 
+	\begin{figure}
+		\includegraphics[height=3in]{figs/Duchon-paper.png}
+	\end{figure}
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{High dimensional smoothing with Duchon splines}
+	Wood (2003) type penalty:
+	\begin{equation*}
+		J_{m,d} = \int \ldots \int_{\mathbb{R}^d} \sum_{\nu_1 + \dots + \nu_d=m} \frac{m!}{\nu_1! \dots \nu_d!}\Big( \frac{\partial^m f(x_1,\dots,x_d)}{\partial x_1^{\nu_1} \ldots  \partial x_d^{\nu_d}} \Big)^2 \text{d} x_1 \ldots  \text{d} x_d
+	\end{equation*}
+	Why not take the Fourier transform? (Equivalent by Plancherel theorem)
+	\begin{equation*}
+		\breve{J}_{m,d} = \int \ldots \int_{\mathbb{R}^d} \sum_{\nu_1 + \dots + \nu_d=m} \frac{m!}{\nu_1! \dots \nu_d!}\Big( \mathfrak{F} \frac{\partial^m f}{\partial x_1^{\nu_1} \ldots  \partial x_d^{\nu_d}}(\boldsymbol{\tau}) \Big)^2 \text{d} \boldsymbol{\tau}
+	\end{equation*}
+	Putting in some arbitrary weighting, $w(\boldsymbol{\tau})$:
+	\begin{equation*}
+		\breve{J}_{m,d} = \int \ldots \int_{\mathbb{R}^d} w(\boldsymbol{\tau}) \sum_{\nu_1 + \dots + \nu_d=m} \frac{m!}{\nu_1! \dots \nu_d!}\Big( \mathfrak{F} \frac{\partial^m f}{\partial x_1^{\nu_1} \ldots  \partial x_d^{\nu_d}}(\boldsymbol{\tau}) \Big)^2 \text{d} \boldsymbol{\tau}
+	\end{equation*}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Duchon splines penalty}
+	Let $w(\boldsymbol{\tau})=\lvert \boldsymbol{\tau} \rvert^{2s}$ (Duchon 1977)
+	\begin{equation*}
+		\breve{J}_{m,d} = \int \ldots \int_{\mathbb{R}^n} \lvert \boldsymbol{\tau} \rvert^{2s} \sum_{\nu_1 + \dots + \nu_d=m} \frac{m!}{\nu_1! \dots \nu_d!}\Big( \mathfrak{F} \frac{\partial^m f}{\partial x_1^{\nu_1} \ldots  \partial x_d^{\nu_d}}(\boldsymbol{\tau}) \Big)^2 \text{d} \boldsymbol{\tau}
+	\end{equation*}	
+	
+	\bi
+	\item This penalises high frequency components of the derivatives.
+	\item Now the condition relating $d$ and $m$ is $d/2 -m \leq s$.
+	\item Given we want to use $m=2$ (some pseudo-theoretical reasons for that) and we have a set $d$, determine $s$ by
+	\begin{equation}
+		s=d/2-2
+	\end{equation}
+	\ei
+	
+\end{frame}
+
+% using ml/gcv
+
+% some results
+
+
+%\begin{frame}
+%	\frametitle{}
+%\end{frame}
+
+
+
+
+
 
 \section{Conclusions}
 
