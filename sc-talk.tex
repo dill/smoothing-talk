@@ -162,10 +162,12 @@
         \item Do smoothing with splines in an additive model framework.
         \item Take some linear combination of (known) basis functions.
         \item Penalize based on integral of second squared derivative:
+        \ei
             \begin{equation*}
-	            \int\int_\Omega \Big( \Big(\frac{\partial^2 f(x,y)}{\partial x^2}\Big)^2 + \Big(\frac{\partial^2 f(x,y)}{\partial x \partial y}\Big)^2 + \Big(\frac{\partial^2 f(x,y)}{\partial y^2}\Big)^2\Big) \text{d}x\text{d}y.
+	            \int\int_{\mathbf{R}^2} \Big( \Big(\frac{\partial^2 f(x_1,x_2)}{\partial x_1^2}\Big)^2 + \Big(\frac{\partial^2 f(x_1,x_2)}{\partial x_1 \partial x_2}\Big)^2 + \Big(\frac{\partial^2 f(x_1,x_2)}{\partial x_2^2}\Big)^2\Big) \text{d}x_1\text{d}x_2.
             \end{equation*}
-        \item Here using thin plate regression splines (eg Wood (2003)).
+      \bi
+        \item Using thin plate regression splines (eg Wood (2003)).
         \includegraphics[width=4in]{figs/tprsex} 
       \ei
 \end{frame}
@@ -195,9 +197,9 @@
         \ec
 \end{frame}
 
-\begin{frame}
-	\frametitle{Explanation of FELSPLINE/soap/GLTPS}
-\end{frame}
+%\begin{frame}
+%	\frametitle{Explanation of FELSPLINE/soap/GLTPS}
+%\end{frame}
 
 \begin{frame}
 	\frametitle{``The Third Way''}
@@ -237,7 +239,6 @@
          \item Perform MDS on the matrix of within-area distances.
          \item Find the new configuration of the points.
          \item Smooth over the new points.
-
         \ei
 \end{frame}
 
@@ -245,7 +246,7 @@
 	\frametitle{Multidimensional scaling refresher}
        \bi
          \item Use double centred matrix of between point distances, $D$, using the eigen-decomposition of $DD^T$ we can find new points.
-         \item Finds a configuration of points such that Euclidean distance between points in new arrangement is approximately the same as distance in the domain.
+         \item Finds a projection of points such that Euclidean distance between points in new arrangement is approximately the same as the distances in $D$.
           \item New points can be added into the MDS configuration via Gower's interpolation (Gower, 1968)
         \ei
             \centering
@@ -301,34 +302,32 @@
               \includegraphics[width=4in]{figs/ramsay-low.pdf}\\
 \end{frame}
 
-%\begin{frame}
-%	\frametitle{Ramsay simulations (high noise)}
-%            \centering
-%              \includegraphics[width=4in]{figs/ramsay-high.pdf}\\
-%\end{frame}
-
-%\begin{frame}
-%	\frametitle{A different domain}
-%            \centering
-%              \includegraphics[width=4.5in]{figs/wt2-real.pdf}\\
-%\end{frame}
+\begin{frame}
+	\frametitle{The Aral sea}
+	\textbf{ARAL SEA PICTURE}
+\end{frame}
 
 \begin{frame}
 	\frametitle{The Aral sea}
             \centering
-              \includegraphics[height=3in]{figs/aral-fit.pdf}\\
+              \includegraphics[height=3.5in]{figs/aral-fit.pdf}\\
 \end{frame}
 
 \begin{frame}
-	\frametitle{So, it looks good...}
+	\frametitle{But...}
           \bi
             \item Computationally costly to find the within-area distances. (Esp. prediction.)
             \item Comparative in MSE terms to the soap film smoother.
-            \item Artefacts.
+            \item Artefacts -- ordering?
             \item Taking a $m$-D projection of $n$-D space.
            \ei
-            \centering
-              \includegraphics[height=1.5in]{figs/wt2-3d-proj.pdf}\\           
+ %           \centering
+\textbf{3D PLOT HERE?!?!?!?! EXPLAIN DIAGRAM WITH WT2 ORIGINAL AT LEAST!!}
+%              \includegraphics[height=1.5in]{figs/wt2-3d-proj.pdf}\\           
+	\begin{figure}
+	         	\centering
+              \includegraphics[height=1.75in]{figs/comb.pdf} \includegraphics[height=1.75in]{figs/comb-2d.pdf}
+	\end{figure}
 \end{frame}
 
 
@@ -341,13 +340,18 @@
 		\item Points can lose ordering.
 		\item 3-D projection does better, but can we keep going? (Nullspace gets BIG!)
 	\ei
-	\centering
-              \includegraphics[height=1.75in]{figs/comb.pdf} \includegraphics[height=1.75in]{figs/comb-2d.pdf}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{High dimensional smoothing with Duchon splines}
+
+\begin{frame}
+	\frametitle{High dimensional smoothing with Duchon splines}
+	\bc \textbf{How can we fix this?}\ec
+\end{frame}
+
+
 
 \subsection{Nullspaces}
 
@@ -362,6 +366,7 @@
 		\end{align*}
 		\item $\phi_j(\mathbf{x})$ are linearly independent polynomials of degree $< m$.
 	\ei
+	\textbf{WHAT IS $m$, $d$ etc!!!}
 \end{frame}
 
 
@@ -378,7 +383,7 @@
 				m &= \text{the derivative order in the penalty}\\
 				d &= \text{smoothing dimension}
 			\end{align*}
-		\item \textbf{AND} must obey $2m>d$ \\smoothing dimension++ $\Rightarrow$ derivative penalty++++.
+		\item \textbf{AND} must obey $2m>d$ \\smoothing dimension++ $\Rightarrow$ derivative order++++.
 		\item $M$ gets very big, very fast.
 	\ei
 \end{frame}
@@ -400,6 +405,7 @@
 		\end{equation*}
 		\item Can think of this as a change of basis \textbf{OR} as decomposing the function into frequency components.	
 	\ei
+\textbf{THINK ABOUT THIS!!!}
 \end{frame}
 
 %\begin{frame}
@@ -458,54 +464,90 @@
 		s=d/2-2
 	\end{equation}
 	\ei
-	
 \end{frame}
 
 % using ml/gcv
+\begin{frame}
+	\frametitle{Using ML/GCV score to select projection dimension}
+   \bi
+      \item So, we can now smooth in higher dimensions, \textbf{but how many?}
+      \item Select MDS dimension using GCV or ML score.
+      \item Fit model in a range of dimensions, pick best score.
+      \item No monotonicity guarantees.
+      % FIGURE OF SCORE VS DIM HERE
+   \ei
+\end{frame}
+
+
+
+\subsection{Results}
 
 % some results
+\begin{frame}
+	\frametitle{Pretend coastline}
+	\begin{figure}
+	\includegraphics[height=3.25in]{figs/wt2-comp.pdf}
+	\end{figure}
+\end{frame}
 
+\begin{frame}
+	\frametitle{Aral sea}
+   \begin{figure}
+      \includegraphics[height=3.5in]{figs/aral-duchon-comp.pdf}
+   \end{figure}
+\end{frame}
+
+%\begin{frame}
+%	\frametitle{Something something something}
+%\end{frame}
 
 %\begin{frame}
 %	\frametitle{}
 %\end{frame}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% General distance stuff
+\section{General distance smoothing}
+
+\begin{frame}
+	\frametitle{General distance smoothing}
+	\bi
+		\item Given a general distance matrix, $D$.
+		\item Project the points in $D$ using MDS.
+		\item Smooth over those points.
+	\ei
+	\centering Examples:
+	\bi
+		\item Voting data
+		\item Microarrays
+		\item Socio-economic variables
+	\ei	
+\end{frame}
+
+% EXAMPLES
+%	SHOW MP DATA PLOT?
 
 
-
-
+%%%%%%%%%%%%%% RE-WRITE THIS!!!!
 \section{Conclusions}
 
 \begin{frame}
 	\frametitle{Final comments}
-		\bi
-			\item Clearly, not that useful in practise.
-			\item Better idea of what is required to make domain transformation work in general.
-		\ei
-		\textbf{Criteria for domain transformation techniques:}
           \bi
-            \item Minimize squashing. No crowding.
-            \item Smooth mapping.
-            \item Maintain order.
-            \item Fast mapping.
+            \item Something
+            \item Something
+            \item Something
            \ei
-         \bc \textbf{The key: transform ``just enough'' but no more.} \ec
-         \bi
-         		\item Smoothing on manifolds?
-        \ei
 \end{frame}
 
 \begin{frame}
 	\frametitle{References}
        \bi
-         \item S.N. Wood, M.V. Bravington, and S.L. Hedley. \emph{Soap film smoothing. JRSSB, 2008}
-         \item H. Wang and M.G. Ranalli. \emph{Low-rank smoothing splines on complicated domains. Biometrics, 2007}
-         \item T.A. Driscoll and L.N. Trefethen. \emph{Schwarz-Christoffel Mapping. Cambridge, 2002}
          \item T. Ramsay. \emph{Spline smoothing over difficult regions. JRSSB, 2002}
          \item P.H.C. Eilers. \emph{P-spline smoothing on difficult domains. University of Munich seminar, 2006}
-%	\item C. Chatfield and A.J. Colins. \emph{Introduction to multivariate analysis. CRC, 1980}
 	\item J.C. Gower. \emph{Adding a point to vector diagrams in multivariate analysis. Biometrika, 1968.}
+	\item Duchon, J. (1977). \emph{Splines minimizing rotation-invariant semi-norms in Sobolev spaces. Constructive theory of functions of several variables.} Springer.
         \ei
         Slides available at \url{http://people.bath.ac.uk/dlm27}
 \end{frame}
