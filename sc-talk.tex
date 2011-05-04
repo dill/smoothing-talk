@@ -1,4 +1,3 @@
-%%for slideshow
 \documentclass[ignorenonframetext]{beamer} %add option 'draft' for quicker compilation
 \usepackage{amsmath,amssymb,multirow}
 \newcommand{\slides}{1}
@@ -176,9 +175,35 @@
 
 \subsection{Solutions}
 
+%\begin{frame}
+%	\frametitle{Proposed solutions to leakage problems}
+%	Two categories: PDE boundary condition based, within-area distance based.
+%       \bi
+%         \item PDEs:
+%	  \bi
+%             \item FELSPLINE (Ramsay, 2002).
+%             \item Soap film smoothers (Wood \emph{et al}, 2008).
+%           \ei
+%           \item Within-area distance
+%           \bi
+%             \item Geodesic Low-Rank  Thin Plate Splines (GLTPS) (Wang and Ranalli, 2007).
+%           \ei
+%        \ei
+%        \bc\begin{tabular}{@{}cc}
+%          & \\
+%        \includegraphics[width=2in]{figs/ramsaytriangulation.png}&\includegraphics[width=2in]{figs/soapbases.png}\\
+%        \end{tabular}
+%        \ec
+%\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}
 	\frametitle{Proposed solutions to leakage problems}
-	Two categories: PDE boundary condition based, within-area distance based.
+	Two classes:
        \bi
          \item PDEs:
 	  \bi
@@ -190,19 +215,66 @@
              \item Geodesic Low-Rank  Thin Plate Splines (GLTPS) (Wang and Ranalli, 2007).
            \ei
         \ei
-        \bc\begin{tabular}{@{}cc}
-          & \\
-        \includegraphics[width=2in]{figs/ramsaytriangulation.png}&\includegraphics[width=2in]{figs/soapbases.png}\\
-        \end{tabular}
-        \ec
+%        \bc\begin{tabular}{@{}cc}
+%          & \\
+%        \includegraphics[width=2in]{figs/ramsaytriangulation.png}&\includegraphics[width=2in]{figs/soapbases.png}\\
+%        \end{tabular}
+%        \ec
 \end{frame}
 
-%\begin{frame}
-%	\frametitle{Explanation of FELSPLINE/soap/GLTPS}
-%\end{frame}
 
 \begin{frame}
-	\frametitle{``The Third Way''}
+	\frametitle{FELSPLINE (Ramsay, 2002)}
+	\bi
+             \item Triangulate domain.
+             \item Setup PDEs on triangles.
+             \item Solve PDE system $\Rightarrow$ solve smoothing problem.
+             \item BAD: unrealistic boundary condition.
+         \ei
+         \begin{figure}
+         		\centering
+        \includegraphics[width=2.5in]{figs/ramsaytriangulation.png}
+	\end{figure}        
+\end{frame}
+
+\begin{frame}
+	\frametitle{Geodesic Low-Rank  Thin Plate Splines (GLTPS) (Wang and Ranalli, 2007).}
+	\bi
+             \item Form the complete graph ($G$) on the data.
+             \item Run $k-$NN, to create the reduced graph ($G_k$).
+             \item Use Floyd's algorithm to find distances ($O(n^3)$).
+             \item BAD: few data $\Rightarrow$ inaccurate distances.
+             \item BAD: many data $\Rightarrow$ slow!
+         \ei
+         \begin{figure}
+         		\centering
+                 \includegraphics[width=2.5in]{figs/wr-river.png}
+	\end{figure}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Soap film smoothers (Wood \emph{et al}, 2008)}
+	\bi
+	   \item Coat hangers, soapy water, PDEs.
+	   \item Solve PDEs (Laplace + Poisson) $\Rightarrow$ basis functions.
+	   \item Cyclic spline gives boundary conditions.
+	   \item BAD: mathematically complex.
+	\ei
+        \begin{figure}
+         	\centering
+	\includegraphics[width=3.5in]{figs/soapbases.png}
+	\end{figure}
+\end{frame}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+	\frametitle{Domain morphing}
       \bi
          \item Domain morphing - think of domain as silly putty.
          \item Takes into account within-area distance.
@@ -221,8 +293,6 @@
          \includegraphics[height=1in]{figs/matlab-test-3}
       \ec
 \end{frame}
-
-
 
 \section{Multidimensional Scaling}
 
@@ -302,10 +372,10 @@
               \includegraphics[width=4in]{figs/ramsay-low.pdf}\\
 \end{frame}
 
-\begin{frame}
-	\frametitle{The Aral sea}
-	\textbf{ARAL SEA PICTURE}
-\end{frame}
+%\begin{frame}
+%	\frametitle{The Aral sea}
+%	\textbf{ARAL SEA PICTURE}
+%\end{frame}
 
 \begin{frame}
 	\frametitle{The Aral sea}
@@ -319,7 +389,7 @@
             \item Computationally costly to find the within-area distances. (Esp. prediction.)
             \item Comparative in MSE terms to the soap film smoother.
             \item Artefacts -- ordering?
-            \item Taking a $m$-D projection of $n$-D space.
+            \item Taking a $m$-D projection of $n$-D space -- higher dimensions $==$ better?
            \ei
 	\textbf{[[3D PLOT]]}
 	\begin{figure}
@@ -328,17 +398,15 @@
 	\end{figure}
 \end{frame}
 
-
-
-\begin{frame}
-	\frametitle{Ordering}
-	\bi
-		\item So, where are the artefacts coming from?
-		\item Taking projections of $n$-dimensional space.
-		\item Points can lose ordering.
-		\item 3-D projection does better, but can we keep going? (Nullspace gets BIG!)
-	\ei
-\end{frame}
+%\begin{frame}
+%	\frametitle{Ordering}
+%	\bi
+%		\item So, where are the artefacts coming from?
+%		\item Taking projections of $n$-dimensional space.
+%		\item Points can lose ordering.
+%		\item 3-D projection does better, but can we keep going? (Nullspace gets BIG!)
+%	\ei
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -348,8 +416,6 @@
 	\frametitle{High dimensional smoothing with Duchon splines}
 	\bc \textbf{How can we fix this?}\ec
 \end{frame}
-
-
 
 \subsection{Nullspaces}
 
@@ -362,9 +428,14 @@
 		f(\mathbf{x}) &= \sum_{i=1}^n \delta_i \eta_{md}(\mathbf{x}-\mathbf{x_i}) + \sum_{j=1}^M \alpha_j \phi_j(\mathbf{x})\\
 		&= \text{radial basis functions} + \text{``planes''}
 		\end{align*}
+		Where \begin{align*}
+				m &= \text{the derivative order in the penalty}\\
+				d &= \text{smoothing dimension}\\
+				n &= \text{\# data}\\
+				M &= \text{nullspace dimension}
+		\end{align*}
 		\item $\phi_j(\mathbf{x})$ are linearly independent polynomials of degree $< m$.
 	\ei
-	\textbf{WHAT IS $m$, $d$ etc!!!}
 \end{frame}
 
 
@@ -394,17 +465,17 @@
 	\end{figure}
 \end{frame}
 
-\begin{frame}
-	\frametitle{A brief digression into Fourier transforms (I)} 
-	\bi
-		\item Given some function, we can take the Fourier transform:
-		\begin{equation*}
-			\mathfrak{F} g(\boldsymbol{\tau}) = \int \ldots \int_{\mathbb{R}^n} e^{2 \pi \sqrt{-1} \mathbf{x}^\text{T} \boldsymbol{\tau}} g(\mathbf{x}) \text{d}\mathbf{x}.
-		\end{equation*}
-		\item Can think of this as a change of basis \textbf{OR} as decomposing the function into frequency components.	
-	\ei
-\textbf{THINK ABOUT THIS!!!}
-\end{frame}
+%\begin{frame}
+%	\frametitle{A brief digression into Fourier transforms (I)} 
+%	\bi
+%		\item Given some function, we can take the Fourier transform:
+%		\begin{equation*}
+%			\mathfrak{F} g(\boldsymbol{\tau}) = \int \ldots \int_{\mathbb{R}^n} e^{2 \pi \sqrt{-1} \mathbf{x}^\text{T} \boldsymbol{\tau}} g(\mathbf{x}) \text{d}\mathbf{x}.
+%		\end{equation*}
+%		\item Can think of this as a change of basis \textbf{OR} as decomposing the function into frequency components.	
+%	\ei
+%\textbf{THINK ABOUT THIS!!!}
+%\end{frame}
 
 %\begin{frame}
 %	\frametitle{A brief digression into Fourier transforms (II)} 
@@ -428,39 +499,68 @@
 	\begin{figure}
 		\includegraphics[height=3in]{figs/Duchon-paper.png}
 	\end{figure}
-
 \end{frame}
 
 \begin{frame}
 	\frametitle{High dimensional smoothing with Duchon splines}
-	Wood (2003) type penalty:
+	\bc \textbf{TPRS to Duchon splines.}\ec
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{High dimensional smoothing with Duchon splines}
+	Wood (2003) type penalty in 2D, order 2 derivatives:
+	            \begin{equation*}
+	            \int\int_{\mathbf{R}^2} \Big( \Big(\frac{\partial^2 f(x_1,x_2)}{\partial x_1^2}\Big)^2 + \Big(\frac{\partial^2 f(x_1,x_2)}{\partial x_1 \partial x_2}\Big)^2 + \Big(\frac{\partial^2 f(x_1,x_2)}{\partial x_2^2}\Big)^2\Big) \text{d}x_1\text{d}x_2.
+            \end{equation*}
+	More generally:
 	\begin{equation*}
 		J_{m,d} = \int \ldots \int_{\mathbb{R}^d} \sum_{\nu_1 + \dots + \nu_d=m} \frac{m!}{\nu_1! \dots \nu_d!}\Big( \frac{\partial^m f(x_1,\dots,x_d)}{\partial x_1^{\nu_1} \ldots  \partial x_d^{\nu_d}} \Big)^2 \text{d} x_1 \ldots  \text{d} x_d
 	\end{equation*}
-	Why not take the Fourier transform? (Equivalent by Plancherel theorem)
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{High dimensional smoothing with Duchon splines}
 	\begin{equation*}
-		\breve{J}_{m,d} = \int \ldots \int_{\mathbb{R}^d} \sum_{\nu_1 + \dots + \nu_d=m} \frac{m!}{\nu_1! \dots \nu_d!}\Big( \mathfrak{F} \frac{\partial^m f}{\partial x_1^{\nu_1} \ldots  \partial x_d^{\nu_d}}(\boldsymbol{\tau}) \Big)^2 \text{d} \boldsymbol{\tau}
+		J_{m,d} = \int \ldots \int_{\mathbb{R}^d} \sum_{\nu_1 + \dots + \nu_d=m} \frac{m!}{\nu_1! \dots \nu_d!}\Big( \frac{\partial^m f(x_1,\dots,x_d)}{\partial x_1^{\nu_1} \ldots  \partial x_d^{\nu_d}} \Big)^2 \text{d} x_1 \ldots  \text{d} x_d
 	\end{equation*}
-	Putting in some arbitrary weighting, $w(\boldsymbol{\tau})$:
+	Why not take the Fourier transform? 
 	\begin{equation*}
-		\breve{J}_{m,d} = \int \ldots \int_{\mathbb{R}^d} w(\boldsymbol{\tau}) \sum_{\nu_1 + \dots + \nu_d=m} \frac{m!}{\nu_1! \dots \nu_d!}\Big( \mathfrak{F} \frac{\partial^m f}{\partial x_1^{\nu_1} \ldots  \partial x_d^{\nu_d}}(\boldsymbol{\tau}) \Big)^2 \text{d} \boldsymbol{\tau}
+		J_{m,d} = \int \ldots \int_{\mathbb{R}^d} \sum_{\nu_1 + \dots + \nu_d=m} \frac{m!}{\nu_1! \dots \nu_d!}\Big( \mathfrak{F} \frac{\partial^m f}{\partial x_1^{\nu_1} \ldots  \partial x_d^{\nu_d}}(\boldsymbol{\tau}) \Big)^2 \text{d} \boldsymbol{\tau}
 	\end{equation*}
+	(Equivalent by Plancherel theorem)
 \end{frame}
 
 \begin{frame}
 	\frametitle{Duchon splines penalty}
+	Putting in some arbitrary weighting, $w(\boldsymbol{\tau})$:
+	\begin{equation*}
+		\breve{J}_{m,d} = \int \ldots \int_{\mathbb{R}^d} w(\boldsymbol{\tau}) \sum_{\nu_1 + \dots + \nu_d=m} \frac{m!}{\nu_1! \dots \nu_d!}\Big( \mathfrak{F} \frac{\partial^m f}{\partial x_1^{\nu_1} \ldots  \partial x_d^{\nu_d}}(\boldsymbol{\tau}) \Big)^2 \text{d} \boldsymbol{\tau}
+	\end{equation*}
 	Let $w(\boldsymbol{\tau})=\lvert \boldsymbol{\tau} \rvert^{2s}$ (Duchon 1977)
+	\begin{equation*}
+		\breve{J}_{m,d} = \int \ldots \int_{\mathbb{R}^n} \lvert \boldsymbol{\tau} \rvert^{2s} \sum_{\nu_1 + \dots + \nu_d=m} \frac{m!}{\nu_1! \dots \nu_d!}\Big( \mathfrak{F} \frac{\partial^m f}{\partial x_1^{\nu_1} \ldots  \partial x_d^{\nu_d}}(\boldsymbol{\tau}) \Big)^2 \text{d} \boldsymbol{\tau}
+	\end{equation*}	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Duchon splines penalty}
 	\begin{equation*}
 		\breve{J}_{m,d} = \int \ldots \int_{\mathbb{R}^n} \lvert \boldsymbol{\tau} \rvert^{2s} \sum_{\nu_1 + \dots + \nu_d=m} \frac{m!}{\nu_1! \dots \nu_d!}\Big( \mathfrak{F} \frac{\partial^m f}{\partial x_1^{\nu_1} \ldots  \partial x_d^{\nu_d}}(\boldsymbol{\tau}) \Big)^2 \text{d} \boldsymbol{\tau}
 	\end{equation*}	
 	
 	\bi
 	\item This penalises high frequency components of the derivatives.
-	\item Now the condition relating $d$ and $m$ is $d/2 -m \leq s$.
-	\item Given we want to use $m=2$ (some pseudo-theoretical reasons for that) and we have a set $d$, determine $s$ by
-	\begin{equation}
+	\item For continuity now just need:
+	\begin{equation*}
+		d/2 -m \leq s
+	\end{equation*}
+	\item Can now always use $m=2$ (some pseudo-theoretical reasons for that) and we have a set $d$, determine $s$ by
+	\begin{equation*}
 		s=d/2-2
-	\end{equation}
+	\end{equation*}
 	\ei
 \end{frame}
 
@@ -471,18 +571,27 @@
       \item So, we can now smooth in higher dimensions, \textbf{but how many?}
       \item Select MDS dimension using GCV or ML score.
       \item Fit model in a range of dimensions, pick best score.
-      \item No monotonicity guarantees.
-      % FIGURE OF SCORE VS DIM HERE
+      \item No guarantee of having a ``nice'' function to optimise.
    \ei
+   \begin{figure}
+   \centering
+   \includegraphics[height=2in]{figs/gcv-dim-aral.pdf}
+   \end{figure}
 \end{frame}
 
 
 
 \subsection{Results}
 
+\begin{frame}
+	\frametitle{More results}
+	\bc \textbf{How well do Duchon splines do?}\ec
+\end{frame}
+
+
 % some results
 \begin{frame}
-	\frametitle{Pretend coastline}
+	\frametitle{Fake coastline simulation}
 	\begin{figure}
 	\includegraphics[height=3.25in]{figs/wt2-comp.pdf}
 	\end{figure}
@@ -513,13 +622,14 @@
 	\bi
 		\item Given a general distance matrix, $D$.
 		\item Project the points in $D$ using MDS.
-		\item Smooth over those points.
+		\item Smooth over those points -- full GAM framework available.
 	\ei
 	\centering Examples:
 	\bi
-		\item Voting data
+		\item Other bio/ecol distances (?)
+		\item MP voting data
 		\item Microarrays
-		\item Socio-economic variables
+		\item Socio-economic data
 	\ei	
 \end{frame}
 
@@ -531,24 +641,24 @@
 \section{Conclusions}
 
 \begin{frame}
-	\frametitle{Final comments}
+	\frametitle{Conclusions}
           \bi
-            \item Something
-            \item Something
-            \item Something
+            \item Using Duchon splines gets around problems with high dimensional smoothing.
+            \item MDS projections + Duchon splines + WAD useful for spatial smoothing.
+            \item Perhaps applications in a broader set of problems involving distances.
            \ei
-\end{frame}
-
-\begin{frame}
-	\frametitle{References}
-       \bi
-         \item T. Ramsay. \emph{Spline smoothing over difficult regions. JRSSB, 2002}
-         \item P.H.C. Eilers. \emph{P-spline smoothing on difficult domains. University of Munich seminar, 2006}
-	\item J.C. Gower. \emph{Adding a point to vector diagrams in multivariate analysis. Biometrika, 1968.}
-	\item Duchon, J. (1977). \emph{Splines minimizing rotation-invariant semi-norms in Sobolev spaces. Constructive theory of functions of several variables.} Springer.
-        \ei
         Slides available at \url{http://people.bath.ac.uk/dlm27}
 \end{frame}
+
+%\begin{frame}
+%	\frametitle{References}
+%       \bi
+%         \item T. Ramsay. \emph{Spline smoothing over difficult regions. JRSSB, 2002}
+%	\item J.C. Gower. \emph{Adding a point to vector diagrams in multivariate analysis. Biometrika, 1968.}
+%	\item J. Duchon. \emph{Splines minimizing rotation-invariant semi-norms in Sobolev spaces. Constructive theory of functions of several variables.} Springer, 1977.
+%        \ei
+%        Slides available at \url{http://people.bath.ac.uk/dlm27}
+%\end{frame}
 
 \begin{frame}
 	\frametitle{Appendix - Ordering problems in 4-D}
